@@ -10,8 +10,13 @@
 
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(180deg, #f0f1f3 0%, #ffffff 100%);
-      background-attachment: fixed;
+      background: repeating-linear-gradient(
+        135deg,
+        #f3f4f7 0,
+        #f3f4f7 2px,
+        #f8f9fb 2px,
+        #f8f9fb 4px
+      );
       display: flex;
       align-items: flex-start;
       justify-content: center;
@@ -73,9 +78,16 @@
     .profile {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 16px;
+      justify-content: space-between;
+      padding: 16px 18px;
     }
+
+    .profile-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
     .photo {
       width: 80px;
       height: 80px;
@@ -83,6 +95,7 @@
       background: #f3f3f3 center/cover no-repeat;
       border: 2px solid #ddd;
     }
+
     .profile-info h2 {
       font-size: 19px;
       color: #222;
@@ -94,8 +107,36 @@
       line-height: 1.4;
     }
 
+    /* Right side buttons */
+    .badge-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .bus-badge {
+      background: #ff7b00;
+      color: #fff;
+      padding: 6px 14px;
+      border-top-left-radius: 14px;
+      border-bottom-left-radius: 14px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .status {
+      background: #24a148;
+      color: #fff;
+      padding: 6px 14px;
+      border-top-right-radius: 14px;
+      border-bottom-right-radius: 14px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
     .details {
-      padding: 14px 18px;
+      padding: 10px 18px;
       border-top: 1px solid #f2f2f2;
     }
     .details p {
@@ -116,14 +157,6 @@
       background: #fbfdff;
       border-top: 1px solid #f1f1f1;
       font-size: 13px;
-    }
-    .status {
-      background: #24a148;
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 12px;
     }
 
     .time-bar {
@@ -174,8 +207,9 @@
     @media (max-width: 420px) {
       .page { padding: 12px; }
       .card, .receipt { width: 100%; }
-      .profile { flex-direction: row; align-items: center; }
+      .profile-left { flex-direction: row; align-items: center; }
       .photo { width: 70px; height: 70px; }
+      .bus-badge, .status { font-size: 12px; padding: 5px 10px; }
     }
   </style>
 </head>
@@ -194,11 +228,18 @@
         <div class="page" data-index="0">
           <div class="card">
             <div class="profile">
-              <div id="photo" class="photo" style="background-image: url('image/img1.jpg');"></div>
-              <div class="profile-info">
-                <h2>Jigyasa Joshi</h2>
-                <p><strong>Roll No:</strong> 23ENG3CAI1027<br>
-                <strong>Course:</strong> B.Tech (CSE)</p>
+              <div class="profile-left">
+                <div id="photo" class="photo" style="background-image: url('image/img1.jpg');"></div>
+                <div class="profile-info">
+                  <h2>Jigyasa Joshi</h2>
+                  <p><strong>Roll No:</strong> 23ENG3CAI1027<br>
+                  <strong>Course:</strong> B.Tech (CSE)</p>
+                </div>
+              </div>
+
+              <div class="badge-box">
+                <div class="bus-badge">Bus Pass</div>
+                <div class="status">Active</div>
               </div>
             </div>
 
@@ -212,7 +253,6 @@
 
             <div class="bus-pass">
               <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
-              <div class="status">Active</div>
             </div>
           </div>
 
