@@ -1,513 +1,306 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Transport Summary - Accurate Replica</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transport Summary - Jigyasa Joshi</title>
   <style>
-    /* Reset + base */
-    * { box-sizing: border-box; margin:0; padding:0; font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-    html,body { height:100%; background:#f3f5f9; color:#222; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-    .app { max-width:900px; margin:24px auto; background:transparent; padding:0 14px; }
-
-    /* Main container mimicking phone screenshot layout */
-    .frame {
-      display:grid;
-      grid-template-columns: 340px 1fr; /* left big timer column + right content */
-      gap:18px;
-      align-items:start;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Left timer column */
-    .timer-col {
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 6px 18px rgba(11,20,30,0.08);
-      overflow: hidden;
-      padding: 18px;
-      min-height: 520px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-
-    .big-time {
-      font-weight:700;
-      font-size:48px;
-      letter-spacing:2px;
-      color:#1a1a1a;
-      text-align:left;
-      margin-bottom:8px;
-      word-break:break-word;
-    }
-
-    .date-small {
-      font-size:14px;
-      color:#555;
-      margin-bottom:14px;
-    }
-
-    .register-btn {
-      display:inline-block;
-      background:#111;
-      color:white;
-      padding:10px 12px;
-      border-radius:10px;
-      font-size:13px;
-      text-decoration:none;
-      width:100%;
-      text-align:center;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-      margin-top:8px;
-    }
-
-    .left-meta {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:16px;
-      margin-top:22px;
-      font-size:13px;
-      color:#444;
-    }
-
-    .left-meta .fees { text-align:right; }
-    .left-meta .fees strong { display:block; font-size:18px; color:#0078ff; margin-top:4px; font-weight:700; }
-
-    /* Right content area */
-    .content {
-      min-height:520px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
+    body {
+      background-color: #f3f5f9;
     }
 
     .header {
-      background:#0f1723;
-      color:white;
-      padding:12px 16px;
-      border-radius:12px;
-      font-weight:600;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+      background-color: #0052cc;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .tabs {
-      display:flex;
-      gap:6px;
-      background:transparent;
-      padding:8px;
-      align-items:center;
-    }
-    .tab {
-      color:#bfc7d6;
-      background:transparent;
-      border-radius:8px;
-      padding:8px 12px;
-      cursor:pointer;
-      font-weight:600;
-      transition: all .25s ease;
-      border:1px solid rgba(255,255,255,0.06);
-    }
-    .tab.active {
-      background:white;
-      color:#0f1723;
-      box-shadow: 0 6px 14px rgba(12,20,40,0.08);
+      display: flex;
+      justify-content: space-around;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    /* Slide-pages container */
-    .panel {
-      position:relative;
-      overflow:hidden;
-      border-radius:12px;
-      min-height:420px;
-      background:linear-gradient(180deg,#ffffff 0%, #fbfcfe 100%);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      font-weight: 500;
+      color: #777;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .tab.active {
+      color: #0052cc;
+      border-bottom: 3px solid #0052cc;
     }
 
     .pages {
-      display:flex;
-      width:200%;
-      transition: transform 500ms cubic-bezier(.2,.9,.2,1);
-      -webkit-user-select:none;
-      user-select:none;
+      display: flex;
+      width: 200%;
+      transition: transform 0.5s ease-in-out;
     }
 
     .page {
-      width:50%;
-      padding:18px;
-      min-height:420px;
+      width: 50%;
+      padding: 20px;
+      min-height: calc(100vh - 100px);
     }
 
-    /* Bus-pass card layout */
     .card {
-      background:white;
-      border-radius:12px;
-      box-shadow: 0 8px 18px rgba(15,20,30,0.05);
-      overflow:hidden;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
     }
 
     .profile {
-      display:flex;
-      gap:14px;
-      align-items:center;
-      padding:18px;
+      text-align: center;
+      padding: 20px;
     }
 
-    .avatar {
-      width:86px;
-      height:86px;
-      border-radius:16px;
-      overflow:hidden;
-      flex-shrink:0;
-      border:3px solid #eef2f8;
+    .profile .photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #eee;
+      background-color: #f5f5f5;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 13px;
     }
-    .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
 
-    .profile-info h2 { font-size:20px; margin-bottom:4px; }
-    .profile-info p { font-size:13px; color:#666; margin:2px 0; }
+    .profile h2 {
+      margin: 5px 0;
+      font-size: 19px;
+      color: #222;
+    }
 
-    .divider { height:1px; background:#f1f4f8; margin:0 12px; }
+    .profile p {
+      font-size: 14px;
+      color: #666;
+    }
 
     .details {
-      padding:14px 18px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:8px;
-      color:#333;
-      font-size:14px;
+      padding: 15px 25px;
+      border-top: 1px solid #eee;
     }
 
-    .details .row { display:flex; justify-content:space-between; align-items:center; gap:10px; }
-    .highlight { color:#0078ff; font-weight:700; }
+    .details p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .highlight {
+      color: #0078ff;
+      font-weight: 600;
+    }
 
     .bus-pass {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:12px 18px;
-      background:#fafbfd;
-      border-top:1px solid #f2f4f8;
-      font-size:13px;
-      color:#333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9fafc;
+      padding: 12px 25px;
+      border-top: 1px solid #eee;
+      font-size: 13px;
+      color: #444;
     }
 
     .status {
-      background:#2ecc71;
-      color:white;
-      padding:6px 12px;
-      border-radius:10px;
-      font-weight:700;
-      font-size:13px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 6px;
     }
 
-    .download-wrap { padding:18px; text-align:center; border-top:1px solid #f1f4f8; }
-    .download-btn {
-      display:inline-block;
-      background:#007bff;
-      color:#fff;
-      padding:10px 18px;
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:700;
-      box-shadow: 0 10px 22px rgba(3,78,162,0.12);
+    .time-bar {
+      text-align: center;
+      padding: 15px;
+      border-top: 1px solid #eee;
+      font-size: 14px;
+      color: #444;
+      background: #fafafa;
+      font-weight: 600;
     }
 
-    /* Receipts list */
-    .receipts { display:flex; gap:12px; flex-direction:column; padding:6px 0; }
     .receipt {
-      background:white;
-      padding:14px;
-      border-radius:10px;
-      box-shadow: 0 6px 16px rgba(3,12,30,0.04);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-    }
-    .receipt .left { font-size:14px; color:#222; }
-    .receipt .left small { display:block; color:#6b7280; font-size:12px; margin-top:6px; }
-    .receipt .download { background:#10b981; color:white; padding:8px 12px; border-radius:8px; font-weight:700; }
-
-    /* Footer note for small screens */
-    .footnote { font-size:12px; color:#666; margin-top:8px; }
-
-    /* swipe hint (small circle) */
-    .swipe-hint { position:absolute; left:50%; transform:translateX(-50%); bottom:8px; font-size:11px; color:#8b95a6; width:160px; text-align:center; }
-
-    /* responsive */
-    @media (max-width:960px) {
-      .frame { grid-template-columns: 1fr; }
-      .timer-col { order:2; min-height:380px; }
-      .content { order:1; }
-      .pages { width:200%; }
-      .page { width:100%; } /* show one page at a time vertically */
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      padding: 15px 20px;
+      margin-bottom: 15px;
     }
 
-    /* small device tweaks to match screenshot proportions */
-    @media (max-width:420px) {
-      .big-time { font-size:40px; }
-      .avatar { width:74px; height:74px; }
-      .frame { gap:10px; padding:0 8px; }
-      .timer-col { padding:14px; }
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      color: #222;
+      margin-bottom: 8px;
     }
 
+    .receipt-details {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .page {
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="frame">
+  <div class="header">Transport Summary</div>
 
-      <!-- LEFT: Big Timer / Register -->
-      <div class="timer-col" aria-hidden="false">
-        <div>
-          <div class="big-time" id="bigTime">21:59:21</div>
-          <div class="date-small" id="bigDate">09-10-2025</div>
+  <div class="tabs">
+    <div id="tab1" class="tab active" onclick="showPage(0)">Bus Pass</div>
+    <div id="tab2" class="tab" onclick="showPage(1)">Receipt</div>
+  </div>
 
-          <div style="margin-top:18px; display:flex; gap:8px; align-items:center;">
-            <div style="flex:1;">
-              <div style="font-size:13px;color:#666;">Register for Transport</div>
-              <a class="register-btn" href="#" id="registerBtn">Register for Transport</a>
-            </div>
-          </div>
-
-          <div style="margin-top:18px;">
-            <div style="font-size:13px;color:#666;">Bus Pass</div>
-            <div style="margin-top:6px; display:flex; gap:10px; align-items:center;">
-              <div style="flex:1;">
-                <div style="font-size:12px;color:#666">Duration</div>
-                <div style="font-weight:700">15-09-2025 to 31-05-2026</div>
-              </div>
-            </div>
-          </div>
+  <div id="pages" class="pages">
+    <!-- Bus Pass Page -->
+    <div class="page">
+      <div class="card">
+        <div class="profile">
+          <div class="photo">Photo</div>
+          <h2>Jigyasa Joshi</h2>
+          <p><strong>Roll No:</strong> 23ENG3CAI1027</p>
+          <p><strong>Course:</strong> B.Tech (CSE)</p>
         </div>
 
-        <div class="left-meta">
-          <div>
-            <div style="font-size:12px;color:#666">Route</div>
-            <div style="font-weight:700">R3 - MANASA TO MANDSAUR</div>
-          </div>
-          <div class="fees">
-            <div style="font-size:12px;color:#666">Amount</div>
-            <strong>₹7,200</strong>
-            <div style="font-size:12px;color:#666">Pending ₹0</div>
-          </div>
+        <div class="details">
+          <p><strong>Route:</strong> R3 - <span class="highlight">Manasa to Mandsaur</span></p>
+          <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
+          <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
+          <p><strong>Fee Paid:</strong> ₹7,200</p>
+          <p><strong>Pending Amount:</strong> ₹0</p>
+        </div>
+
+        <div class="bus-pass">
+          <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
+          <div class="status">Active</div>
+        </div>
+
+        <div class="time-bar" id="timeBar">
+          00:00:00 | 00-00-0000
+        </div>
+      </div>
+    </div>
+
+    <!-- Receipts Page -->
+    <div class="page">
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASU)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br />
+          Reference No: ES502907DXTKKF<br />
+          Reference Date: 17-09-2025
         </div>
       </div>
 
-      <!-- RIGHT: Header + Pages -->
-      <div class="content">
-        <div class="header">
-          <div style="display:flex;gap:12px;align-items:center;">
-            <div style="font-size:18px; color:white; font-weight:700;">Transport Summary</div>
-            <div style="opacity:0.85;color:white;font-size:13px;">Bus Pass</div>
-          </div>
-
-          <div class="tabs" role="tablist" aria-label="Pages">
-            <div id="tabPass" class="tab active" role="tab" aria-selected="true" tabindex="0">Bus Pass</div>
-            <div id="tabReceipt" class="tab" role="tab" tabindex="0">Receipt</div>
-          </div>
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASU)</span>
         </div>
-
-        <div class="panel" id="panel">
-          <div class="pages" id="pages">
-
-            <!-- PAGE 1: Bus Pass -->
-            <div class="page" id="page1">
-              <div class="card">
-                <div class="profile">
-                  <div class="avatar">
-                    <!-- replace src if necessary; using uploaded photo filenames -->
-                    <img src="images/niyati.jpg" alt="profile">
-                  </div>
-                  <div class="profile-info">
-                    <h2 id="profileName">JIGYASA JOSHI</h2>
-                    <p><strong>Roll No:</strong> 23ENG3CAI1027 / Mandsaur</p>
-                    <p><strong>Course:</strong> B.Tech (CSE) - S5</p>
-                  </div>
-                </div>
-
-                <div class="divider"></div>
-
-                <div class="details">
-                  <div class="row"><div>Route</div><div class="highlight">MANASA TO MANDSAUR</div></div>
-                  <div class="row"><div>Duration</div><div>15-09-2025 to 31-05-2026</div></div>
-                  <div class="row"><div>Shift</div><div>Regular (9:00 AM - 5:00 PM)</div></div>
-                  <div class="row"><div>Fee Paid</div><div>₹7,200</div></div>
-                  <div class="row"><div>Pending Amount</div><div>₹0</div></div>
-                </div>
-
-                <div class="bus-pass">
-                  <div>Bus Pass No: <strong>25 / 0876 / 605</strong></div>
-                  <div class="status">Active</div>
-                </div>
-
-                <div class="download-wrap">
-                  <a class="download-btn" href="#" id="downloadReceiptTop">⬇️ Download Receipt</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- PAGE 2: Receipts -->
-            <div class="page" id="page2">
-              <div style="padding:8px 0;">
-                <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
-                  <div style="font-weight:700;font-size:16px;">Receipts</div>
-                  <div style="font-size:13px;color:#6b7280;">(4)</div>
-                </div>
-
-                <div class="receipts" id="receiptList">
-                  <!-- Receipt 1 -->
-                  <div class="receipt">
-                    <div class="left">
-                      <strong>₹7,200</strong>
-                      <small>Payment Type: Online Payment<br>Reference No: ES502907DXTKKF<br>Reference Date: 17-09-2025</small>
-                    </div>
-                    <div><button class="download">Download</button></div>
-                  </div>
-
-                  <!-- Receipt 2 -->
-                  <div class="receipt">
-                    <div class="left">
-                      <strong>₹7,200</strong>
-                      <small>Payment Type: Online Payment<br>Reference No: ES50400GELSRV8<br>Reference Date: 05-04-2025</small>
-                    </div>
-                    <div><button class="download">Download</button></div>
-                  </div>
-
-                  <!-- Receipt 3 -->
-                  <div class="receipt">
-                    <div class="left">
-                      <strong>₹7,200</strong>
-                      <small>Payment Type: Online Payment<br>Reference No: EZ41000C65TTL<br>Reference Date: 01-10-2024</small>
-                    </div>
-                    <div><button class="download">Download</button></div>
-                  </div>
-
-                  <!-- Receipt 4 -->
-                  <div class="receipt">
-                    <div class="left">
-                      <strong>₹2,000</strong>
-                      <small>Payment Type: Online Payment<br>Reference No: Z4501BFQVFKD<br>Reference Date: 18-05-2024</small>
-                    </div>
-                    <div><button class="download">Download</button></div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="swipe-hint" id="swipeHint">Swipe or tap tabs to switch</div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br />
+          Reference No: ES50400GELSRV8<br />
+          Reference Date: 05-04-2025
         </div>
-
-        <div class="footnote">* Tap a tab or swipe left/right to switch between Bus Pass and Receipt. Click downloads to save receipts (dummy links).</div>
       </div>
 
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASU)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br />
+          Reference No: EZ41000C65TTL<br />
+          Reference Date: 01-10-2024
+        </div>
+      </div>
+
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹2,000</h3>
+          <span>(MAMASU)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br />
+          Reference No: Z4501BFQVFKD<br />
+          Reference Date: 18-05-2024
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    // Real clock: update every second
-    function pad(n){ return n<10 ? '0'+n : n; }
-    function updateClock() {
+    function showPage(index) {
+      const pages = document.getElementById("pages");
+      const tab1 = document.getElementById("tab1");
+      const tab2 = document.getElementById("tab2");
+      if (index === 0) {
+        pages.style.transform = "translateX(0%)";
+        tab1.classList.add("active");
+        tab2.classList.remove("active");
+      } else {
+        pages.style.transform = "translateX(-50%)";
+        tab2.classList.add("active");
+        tab1.classList.remove("active");
+      }
+    }
+
+    function pad(n) {
+      return n < 10 ? "0" + n : n;
+    }
+
+    function updateTime() {
       const now = new Date();
       const hh = pad(now.getHours());
       const mm = pad(now.getMinutes());
       const ss = pad(now.getSeconds());
-      const day = pad(now.getDate());
-      const month = pad(now.getMonth()+1);
-      const year = now.getFullYear();
-      document.getElementById('bigTime').textContent = hh + ':' + mm + ':' + ss;
-      document.getElementById('bigDate').textContent = day + '-' + month + '-' + year;
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    // Tab + pages logic with slide animation and keyboard accessibility
-    const pages = document.getElementById('pages');
-    const tabPass = document.getElementById('tabPass');
-    const tabReceipt = document.getElementById('tabReceipt');
-    let currentIndex = 0; // 0 = left (Bus Pass), 1 = right (Receipt)
-
-    function showIndex(i, animate=true) {
-      currentIndex = i;
-      const x = i === 0 ? 'translateX(0%)' : 'translateX(-50%)';
-      if (!animate) {
-        pages.style.transition = 'none';
-        pages.style.transform = x;
-        // force reflow then restore transition
-        pages.offsetHeight;
-        pages.style.transition = 'transform 500ms cubic-bezier(.2,.9,.2,1)';
-      } else pages.style.transform = x;
-      tabPass.classList.toggle('active', i===0);
-      tabReceipt.classList.toggle('active', i===1);
-      tabPass.setAttribute('aria-selected', i===0?'true':'false');
-      tabReceipt.setAttribute('aria-selected', i===1?'true':'false');
+      const dd = pad(now.getDate());
+      const mo = pad(now.getMonth() + 1);
+      const yy = now.getFullYear();
+      document.getElementById("timeBar").innerText = `${hh}:${mm}:${ss} | ${dd}-${mo}-${yy}`;
     }
 
-    tabPass.addEventListener('click', ()=> showIndex(0));
-    tabReceipt.addEventListener('click', ()=> showIndex(1));
-
-    // keyboard support
-    tabPass.addEventListener('keydown', (e)=> { if(e.key==='Enter' || e.key===' ') { e.preventDefault(); showIndex(0);}});
-    tabReceipt.addEventListener('keydown', (e)=> { if(e.key==='Enter' || e.key===' ') { e.preventDefault(); showIndex(1);} });
-
-    // Touch swipe support for pages
-    (function enableSwipe(){
-      const panel = document.getElementById('panel');
-      let startX = 0, currentX = 0, dragging = false;
-      const width = panel.clientWidth;
-
-      panel.addEventListener('touchstart', (e)=> {
-        startX = e.touches[0].clientX;
-        dragging = true;
-        pages.style.transition = 'none';
-      }, {passive:true});
-
-      panel.addEventListener('touchmove', (e)=> {
-        if(!dragging) return;
-        currentX = e.touches[0].clientX;
-        const dx = currentX - startX;
-        // compute percent translate
-        const base = currentIndex === 0 ? 0 : -0.5;
-        const percent = base + (dx / panel.clientWidth) * 0.5;
-        pages.style.transform = 'translateX(' + (percent * 100) + '%)';
-      }, {passive:true});
-
-      panel.addEventListener('touchend', (e)=> {
-        dragging = false;
-        pages.style.transition = 'transform 400ms cubic-bezier(.2,.9,.2,1)';
-        const dx = currentX - startX;
-        if(Math.abs(dx) > 40) {
-          if(dx < 0) showIndex(1);
-          else showIndex(0);
-        } else {
-          showIndex(currentIndex);
-        }
-        startX = currentX = 0;
-      });
-    })();
-
-    // Download buttons are dummy — hook them to simulate downloading
-    function fakeDownload(name) {
-      const a = document.createElement('a');
-      a.href = 'data:application/pdf;base64,';
-      a.download = name || 'receipt.pdf';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    }
-    document.getElementById('downloadReceiptTop').addEventListener('click', function(e){ e.preventDefault(); fakeDownload('receipt_top.pdf'); });
-    document.querySelectorAll('.receipt .download').forEach((btn, idx)=> {
-      btn.addEventListener('click', ()=> fakeDownload('receipt_'+(idx+1)+'.pdf'));
-    });
-
-    // If you want to replace the profile image with the other uploaded file, you can swap the src now:
-    // document.querySelector('.avatar img').src = '/mnt/data/WhatsApp Image 2025-10-09 at 10.00.04 PM (1).jpeg';
+    setInterval(updateTime, 1000);
+    updateTime();
   </script>
 </body>
 </html>
-
