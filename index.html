@@ -4,277 +4,324 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transport Summary - Jigyasa Joshi</title>
-  <!-- Using system fonts so it opens quickly offline; replace with Google Fonts if desired -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html,body { height: 100%; }
-
-    /* Background: layered gradients + subtle SVG noise to mimic textured look */
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #efeef2;
-      background-image:
-        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.12), transparent 10%),
-        radial-gradient(circle at 90% 80%, rgba(255,255,255,0.08), transparent 10%),
-        linear-gradient(180deg, rgba(243,245,249,0.6), rgba(235,236,240,0.6));
-      background-blend-mode: overlay, overlay, normal;
-      /* subtle noise overlay (SVG datauri) */
-      background-repeat: repeat;
+      background: linear-gradient(180deg, #f3f4f7 0%, #e9ebef 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* Header (black as requested) */
     .header {
-      background: #000000;
-      color: #ffffff;
+      background: #000;
+      color: #fff;
       text-align: center;
-      padding: 16px 12px;
+      padding: 16px 0;
       font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
+      font-weight: 600;
+      width: 100%;
       position: sticky;
       top: 0;
-      z-index: 20;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      z-index: 10;
     }
 
-    .header .title {
-      flex: 1;
-      text-align: center;
-    }
-
-    /* Tabs under header */
     .tabs {
-      display:flex;
-      gap:0;
-      background: rgba(255,255,255,0.04);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-around;
+      background-color: #fff;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .tab {
-      flex:1;
-      text-align:center;
-      padding:12px 0;
-      cursor:pointer;
-      color: #cfcfcf;
-      font-weight:600;
-      border-bottom:3px solid transparent;
-      transition: all 260ms ease;
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      font-weight: 500;
+      color: #777;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
-    .tab.active { color: #fff; border-bottom:3px solid #00a2ff; }
-
-    /* Pages container & animation */
-    .viewport {
-      overflow:hidden;
+    .tab.active {
+      color: #0052cc;
+      border-bottom: 3px solid #0052cc;
     }
 
     .pages {
-      display:flex;
-      width:200%;
-      transition: transform 450ms cubic-bezier(.2,.9,.3,1);
+      display: flex;
+      width: 200%;
+      transition: transform 0.5s ease-in-out;
     }
 
     .page {
-      width:50%;
-      padding:20px;
-      min-height: calc(100vh - 120px);
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-      align-items:center;
+      width: 50%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: calc(100vh - 150px);
     }
 
-    /* Card style (bus pass) */
     .card {
-      width:100%;
-      max-width:420px;
-      background:#fff;
-      border-radius:14px;
-      box-shadow: 0 10px 30px rgba(20,30,50,0.08);
-      overflow:hidden;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      width: 90%;
+      max-width: 400px;
     }
 
     .profile {
-      text-align:center;
-      padding:20px 18px 10px 18px;
+      text-align: center;
+      padding: 20px;
     }
 
-    .photo-wrap{
-      width:110px;height:110px;margin:0 auto;border-radius:50%;overflow:hidden;border:4px solid #f1f1f1;background:#fafafa;display:flex;align-items:center;justify-content:center;
-      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    .photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: url('image/img1.jpg') center/cover no-repeat, #f3f3f3;
+      border: 3px solid #e0e0e0;
+      margin: 0 auto 10px;
     }
 
-    .photo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
-
-    .profile h2{margin-top:12px;font-size:20px;color:#222;font-weight:700}
-    .profile p{color:#555;font-size:13px;margin-top:6px}
-
-    .details{padding:16px 22px;border-top:1px solid #f2f2f2}
-    .details p{margin:8px 0;color:#333;font-size:14px}
-    .details .highlight{color:#0078ff;font-weight:700}
-
-    .bus-pass{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:#fbfdff;border-top:1px solid #f1f1f1;font-size:13px}
-    .status{background:#24a148;color:#fff;padding:6px 10px;border-radius:8px;font-weight:700;font-size:12px}
-
-    .time-bar{padding:14px;text-align:center;border-top:1px solid #f3f3f3;background:linear-gradient(180deg,#fafafa,#ffffff);font-weight:700}
-
-    /* Receipt cards */
-    .receipt{width:100%;max-width:420px;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 8px 20px rgba(20,30,50,0.06)}
-    .receipt-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .receipt-header h3{font-size:20px;color:#222;margin:0}
-    .receipt-header span{color:#666;font-size:13px}
-    .receipt-details{color:#555;font-size:13px;line-height:1.5}
-
-    /* small screen fine tuning */
-    @media (max-width:480px){
-      .page{padding:12px}
-      .card,.receipt{max-width:360px}
-      .profile h2{font-size:18px}
-      .header{padding:14px}
+    .profile h2 {
+      margin: 6px 0 2px;
+      font-size: 20px;
+      color: #222;
     }
 
+    .profile p {
+      font-size: 14px;
+      color: #666;
+      margin: 2px 0;
+    }
+
+    .details {
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .details p {
+      font-size: 14px;
+      color: #333;
+      margin: 6px 0;
+    }
+
+    .highlight {
+      color: #0078ff;
+      font-weight: 600;
+    }
+
+    .bus-pass {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9fafc;
+      padding: 12px 20px;
+      border-top: 1px solid #eee;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .status {
+      background-color: #4caf50;
+      color: #fff;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 6px;
+    }
+
+    .time-bar {
+      text-align: center;
+      padding: 15px;
+      border-top: 1px solid #eee;
+      background: #fafafa;
+      font-size: 14px;
+      color: #444;
+      font-weight: 600;
+    }
+
+    .register {
+      margin-top: 20px;
+      background: #f0f0f0;
+      color: #999;
+      font-size: 15px;
+      padding: 12px 25px;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      cursor: not-allowed;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .receipt {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .receipt-details {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    @media screen and (max-width: 600px) {
+      .page { padding: 10px; }
+    }
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="title" id="pageTitle">Transport Summary</div>
-  </div>
+  <div class="header">Transport Summary</div>
 
   <div class="tabs">
     <div id="tab1" class="tab active" onclick="showPage(0)">Bus Pass</div>
     <div id="tab2" class="tab" onclick="showPage(1)">Receipt</div>
   </div>
 
-  <div class="viewport">
-    <div id="pages" class="pages">
+  <div id="pages" class="pages">
+    <!-- Bus Pass Page -->
+    <div class="page">
+      <div class="card">
+        <div class="profile">
+          <div class="photo"></div>
+          <h2>Jigyasa Joshi</h2>
+          <p><strong>Roll No:</strong> 23ENG3CAI1027</p>
+          <p><strong>Course:</strong> B.Tech (CSE)</p>
+        </div>
+        <div class="details">
+          <p><strong>Route:</strong> R3 - <span class="highlight">MANASA TO MANDSAUR</span></p>
+          <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
+          <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
+          <p><strong>Fee Paid:</strong> ₹7,200</p>
+          <p><strong>Pending Amount:</strong> ₹0</p>
+        </div>
+        <div class="bus-pass">
+          <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
+          <div class="status">Active</div>
+        </div>
+        <div class="time-bar" id="timeBar">00:00:00 | 00-00-0000</div>
+      </div>
+      <button class="register">Register for Transport</button>
+    </div>
 
-      <!-- Bus Pass Page -->
-      <div class="page" aria-label="Bus Pass">
-        <div class="card">
-          <div class="profile">
-            <div class="photo-wrap">
-              <!-- placeholder image path requested -->
-              <img src="image/niyati.jpg" alt="profile photo" onerror="this.style.background='#ddd'; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23efefef\'/><text x=\'50%\' y=\'52%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'18\' fill=\'%23999\'>Photo</text></svg>'" />
-            </div>
-            <h2>Jigyasa Joshi</h2>
-            <p><strong>Roll No:</strong> 23ENG3CAI1027</p>
-            <p><strong>Course:</strong> B.Tech (CSE)</p>
-          </div>
-
-          <div class="details">
-            <p><strong>Route:</strong> R3 - <span class="highlight">MANASA TO MANDSAUR</span></p>
-            <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
-            <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
-            <p><strong>Fee Paid:</strong> ₹7,200</p>
-            <p><strong>Pending Amount:</strong> ₹0</p>
-          </div>
-
-          <div class="bus-pass">
-            <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
-            <div class="status">Active</div>
-          </div>
-
-          <div class="time-bar" id="timeBar">00:00:00 | 00-00-0000</div>
+    <!-- Receipts Page -->
+    <div class="page">
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASA)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: ES502907DXTKKF<br>
+          Reference Date: 17-09-2025
         </div>
       </div>
 
-      <!-- Receipts Page -->
-      <div class="page" aria-label="Receipt">
-        <div class="receipt">
-          <div class="receipt-header">
-            <h3>₹7,200</h3>
-            <span>(MAMASA)</span>
-          </div>
-          <div class="receipt-details">
-            Payment Type: Online Payment<br />
-            Reference No: ES502907DXTKKF<br />
-            Reference Date: 17-09-2025
-          </div>
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASA)</span>
         </div>
-
-        <div class="receipt">
-          <div class="receipt-header">
-            <h3>₹7,200</h3>
-            <span>(MAMASA)</span>
-          </div>
-          <div class="receipt-details">
-            Payment Type: Online Payment<br />
-            Reference No: ES50400GELSRV8<br />
-            Reference Date: 05-04-2025
-          </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: ES50400GELSRV8<br>
+          Reference Date: 05-04-2025
         </div>
-
-        <div class="receipt">
-          <div class="receipt-header">
-            <h3>₹7,200</h3>
-            <span>(MAMASA)</span>
-          </div>
-          <div class="receipt-details">
-            Payment Type: Online Payment<br />
-            Reference No: EZ41000C65TTL<br />
-            Reference Date: 01-10-2024
-          </div>
-        </div>
-
-        <div class="receipt">
-          <div class="receipt-header">
-            <h3>₹2,000</h3>
-            <span>(MAMASA)</span>
-          </div>
-          <div class="receipt-details">
-            Payment Type: Online Payment<br />
-            Reference No: Z4501BFQVFKD<br />
-            Reference Date: 18-05-2024
-          </div>
-        </div>
-
       </div>
 
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASA)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: EZ41000C65TTL<br>
+          Reference Date: 01-10-2024
+        </div>
+      </div>
+
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹2,000</h3>
+          <span>(MAMASA)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: Z4501BFQVFKD<br>
+          Reference Date: 18-05-2024
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    const pagesEl = document.getElementById('pages');
-    const tab1 = document.getElementById('tab1');
-    const tab2 = document.getElementById('tab2');
-    const pageTitle = document.getElementById('pageTitle');
+    const pages = document.getElementById("pages");
+    const tab1 = document.getElementById("tab1");
+    const tab2 = document.getElementById("tab2");
 
-    function showPage(idx){
-      if(idx===0){
-        pagesEl.style.transform = 'translateX(0%)';
-        tab1.classList.add('active'); tab2.classList.remove('active');
-        pageTitle.innerText = 'Bus Pass';
+    function showPage(index) {
+      if (index === 0) {
+        pages.style.transform = "translateX(0%)";
+        tab1.classList.add("active");
+        tab2.classList.remove("active");
       } else {
-        pagesEl.style.transform = 'translateX(-50%)';
-        tab2.classList.add('active'); tab1.classList.remove('active');
-        pageTitle.innerText = 'Receipt';
+        pages.style.transform = "translateX(-50%)";
+        tab2.classList.add("active");
+        tab1.classList.remove("active");
       }
     }
 
-    function pad(n){return n<10?('0'+n):n}
-    function updateTime(){
+    function pad(n) { return n < 10 ? "0" + n : n; }
+    function updateTime() {
       const now = new Date();
       const hh = pad(now.getHours());
       const mm = pad(now.getMinutes());
       const ss = pad(now.getSeconds());
       const dd = pad(now.getDate());
-      const mo = pad(now.getMonth()+1);
+      const mo = pad(now.getMonth() + 1);
       const yy = now.getFullYear();
-      document.getElementById('timeBar').innerText = `${hh}:${mm}:${ss} | ${dd}-${mo}-${yy}`;
+      document.getElementById("timeBar").innerText = `${hh}:${mm}:${ss} | ${dd}-${mo}-${yy}`;
     }
 
-    setInterval(updateTime,1000); updateTime();
+    setInterval(updateTime, 1000);
+    updateTime();
 
-    // Start on Bus Pass page by default
-    showPage(0);
+    // Swipe functionality
+    let startX = 0;
+    let endX = 0;
+    const threshold = 50;
 
-    // Keyboard nav for testing (optional)
-    document.addEventListener('keydown', (e)=>{
-      if(e.key==='ArrowLeft') showPage(0);
-      if(e.key==='ArrowRight') showPage(1);
+    document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    document.addEventListener('touchend', e => {
+      endX = e.changedTouches[0].clientX;
+      if (startX - endX > threshold) showPage(1);
+      else if (endX - startX > threshold) showPage(0);
     });
   </script>
 </body>
