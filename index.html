@@ -3,18 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transport Summary - Jigyasa Joshi</title>
+  <title>Transport Summary - NIYATI JAIN</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
 
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f1f1f1;
-      background-image: 
-        repeating-linear-gradient(45deg, rgba(240,240,240,0.5) 0, rgba(220,220,220,0.5) 1px, transparent 2px, transparent 6px),
-        repeating-linear-gradient(-45deg, rgba(240,240,240,0.5) 0, rgba(220,220,220,0.5) 1px, transparent 2px, transparent 6px);
-      background-size: 12px 12px;
+      background: #e8e8e8;
       display: flex;
       align-items: flex-start;
       justify-content: center;
@@ -41,6 +37,7 @@
       background: #fff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
+
     .tab {
       flex: 1;
       text-align: center;
@@ -51,101 +48,136 @@
       cursor: pointer;
       transition: all 200ms;
     }
+
     .tab.active {
       color: #0052cc;
       border-bottom: 3px solid #0052cc;
     }
 
     .viewport { overflow: hidden; width: 100%; }
-    .pages { display: flex; transition: transform 400ms cubic-bezier(.2,.9,.3,1); will-change: transform; }
-    .page { min-width: 100%; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
 
-    /* Card */
+    .pages {
+      display: flex;
+      transition: transform 400ms cubic-bezier(.2,.9,.3,1);
+      will-change: transform;
+    }
+
+    .page {
+      min-width: 100%;
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      min-height: calc(100vh - 160px);
+    }
+
     .card {
       width: 92%;
       max-width: 400px;
-      background: #fff;
+      background: rgba(255,255,255,0.9) url("https://www.transparenttextures.com/patterns/fabric-of-squares.png");
+      background-repeat: repeat;
+      border: 2px solid #ccc;
       border-radius: 14px;
       box-shadow: 0 8px 26px rgba(10,20,40,0.08);
       overflow: hidden;
       position: relative;
+      padding: 18px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
       padding-bottom: 10px;
+    }
+
+    .photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 12px;
+      background: #f3f3f3 center/cover no-repeat;
+      background-image: url('images/niyati.jpg');
+      flex-shrink: 0;
     }
 
     .badges {
       display: flex;
-      justify-content: flex-end;
-      align-items: center;
+      flex-direction: column;
       gap: 8px;
-      padding: 12px 18px 0 18px;
-    }
-    .bus-pass-no {
-      background: #ffa726;
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 20px 0 0 20px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .status {
-      background: #63c173;
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 0 20px 20px 0;
-      font-weight: 700;
-      font-size: 13px;
+      margin-left: auto;
     }
 
-    .profile {
+    .status {
+      background: #70e000;
+      color: #fff;
+      padding: 6px 14px;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      font-weight: 700;
+      font-size: 12px;
+      align-self: flex-end;
+    }
+
+    .bus-no {
+      background: #ff8800;
+      color: #fff;
+      padding: 6px 20px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      font-weight: 700;
+      font-size: 12px;
+      align-self: flex-end;
+    }
+
+    .profile-info {
       text-align: center;
-      padding: 12px 18px 0 18px;
-    }
-    .photo {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: #f3f3f3 center/cover no-repeat;
-      border: 3px solid #eee;
-      margin: 0 auto;
-      background-image: url('img/profile.jpg');
-    }
-    .profile h2 {
       margin-top: 10px;
-      font-size: 20px;
       color: #222;
     }
-    .profile p {
-      color: #444;
-      font-size: 13px;
-      margin-top: 4px;
-      line-height: 1.4;
-    }
+
+    .profile-info h2 { font-size: 20px; margin-bottom: 4px; }
+    .profile-info p { font-size: 13px; color: #555; line-height: 1.5; }
 
     .details {
-      padding: 10px 18px;
+      margin-top: 12px;
       color: #333;
       font-size: 14px;
-      line-height: 1.6;
     }
+
     .highlight { color: #0078ff; font-weight: 700; }
+    .paid { color: #24a148; font-weight: 700; }
     .amount { color: #0099cc; font-weight: 700; }
-    .paid { color: #2ecc71; font-weight: 700; }
+
+    /* horizontally aligned fee section */
+    .fees-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-weight: 600;
+    }
 
     .time-bar {
-      padding: 10px 14px 0 14px;
       text-align: center;
-      font-weight: 600;
-      color: #0078ff;
-      font-size: 14px;
+      font-weight: 700;
+      margin-top: 4px;
     }
-    .time-bar small {
-      display: block;
-      font-size: 12px;
-      color: #333;
+
+    #dateBar {
+      color: #0d0250;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    #timeBar {
+      color: #0d0250; /* soft purple like SS */
+      font-size: 30px;
+      font-weight: 700;
     }
 
     .register {
-      margin-top: 14px;
+      margin-top: 12px;
       background: #000;
       color: #fff;
       font-size: 15px;
@@ -159,7 +191,7 @@
       text-align: center;
     }
 
-    /* Receipts */
+    /* RECEIPT STYLES */
     .receipt {
       width: 92%;
       max-width: 400px;
@@ -167,35 +199,68 @@
       border-radius: 12px;
       padding: 14px 18px;
       box-shadow: 0 8px 20px rgba(10,20,40,0.06);
-      margin-bottom: 10px;
+      position: relative;
+      margin-bottom: 16px;
     }
+
     .receipt-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 8px;
     }
-    .receipt-header h3 { font-size: 20px; color: #0099cc; margin: 0; }
-    .receipt-header span { color: #666; font-size: 13px; }
-    .receipt-details { color: #555; font-size: 13px; line-height: 1.5; margin-bottom: 6px; }
+
+    /* NEW: Stack amount and MANASA vertically */
+    .amount-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* or center */
+      line-height: 1.2;
+    }
+
+    .amount-col h3 {
+      margin: 0;
+      font-size: 20px;
+      color: #0e0027;
+    }
+
+    .amount-col h4 {
+      margin: 3px 0 0 0;
+      font-size: 14px;
+      color: #444;
+      font-weight: 600;
+    }
+
+    .receipt-header span {
+      font-size: 13px;
+      color: #666;
+      align-self: center;
+    }
+
+    .receipt-details {
+      color: #555;
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
     .download-btn {
-      background: #0052cc;
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      background: #297a03;
       color: #fff;
-      border: none;
-      padding: 6px 12px;
+      font-size: 12px;
+      padding: 5px 10px;
       border-radius: 6px;
-      font-size: 13px;
+      border: none;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
-      cursor: pointer;
+      gap: 4px;
+      text-decoration: none;
     }
-    .download-btn img {
-      width: 14px;
-      height: 14px;
-      filter: brightness(0) invert(1);
-    }
+
+    .download-btn img { width: 14px; height: 14px; }
 
     @media (max-width: 420px) {
       .page { padding: 12px; }
@@ -217,102 +282,135 @@
         <!-- Bus Pass Page -->
         <div class="page" data-index="0">
           <div class="card">
-            <div class="badges">
-              <div class="status">Active</div>
-              <div class="bus-pass-no">Bus Pass No: 25 / 0876 / 605</div>
-            </div>
-
             <div class="profile">
               <div class="photo"></div>
-              <h2>Jigyasa Joshi</h2>
-              <p>(Sem-5 \\ 23ENG3CAI1027 | Mandsaur University - CSE-5)</p>
-              <p><strong>Pickup Point:</strong> MANASA</p>
+              <div class="badges">
+                <div class="status">Active</div>
+                <div class="bus-no">Bus Pass No: 25 / 0876 / 605</div>
+              </div>
+            </div>
+
+            <div class="profile-info">
+              <h2>NIYATI JAIN</h2>
+              <p>(Sem-5 | 23ENG3BCT1007 | Mandsaur University - CSE-5)</p>
             </div>
 
             <div class="details">
-              <p><strong>Shift & Timing:</strong> Regular (9:00 AM - 5:00 PM)</p>
-              <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
-              <p><strong>Route:</strong> R3 - <span class="highlight">MANASA TO MANDSAUR</span></p>
-              <p><strong>Fee Amount:</strong> <span class="amount">₹7,200</span></p>
-              <p><strong>Fee Paid:</strong> <span class="paid">₹7,200</span></p>
-              <p><strong>Pending Amount:</strong> ₹0</p>
+              <p>Pickup Point <br> <strong>Jharda - झरदा</strong></p>
+              <p>Shift & Timing <br> <strong>Regular Shift (9:00 AM - 5:00 PM)</strong></p>
+              <p>Duration <br> <strong>15-09-2025 to 31-05-2026</strong></p>
+              <p>Route <br><strong>R3 - MANASA TO MANDSAUR</strong></p>
+
+              <div class="fees-row">
+                <span>Fee Amount <br><span class="amount">₹7,200</span></span>
+                <span>Fee Paid <br><span class="paid">₹7,200</span></span>
+                <span>Pending <br> ₹0</span>
+              </div>
             </div>
           </div>
 
-          <div class="time-bar">
-            <small>📅 <span id="dateBar">00-00-0000</span></small>
-            ⏰ <span id="timeBar">00:00:00</span>
-          </div>
+          <div class="time-bar" id="dateBar">00-00-0000</div>
+          <div class="time-bar" id="timeBar">00:00:00</div>
 
           <button class="register" aria-disabled="true">Register for Transport</button>
         </div>
 
-        <!-- Receipts Page -->
-        <div class="page" data-index="1">
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹7,200</h3><span>2025/S/01469</span>
-            </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: ES502907DXTKKF<br>
-              Reference Date: 17-09-2025
-            </div>
-            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
-          </div>
+        <!-- Receipt Page -->
+        <!-- Receipt Page -->
+<div class="page" data-index="1">
 
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹7,200</h3><span>2025/S/01258</span>
-            </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: ES50400GELSRV8<br>
-              Reference Date: 05-04-2025
-            </div>
-            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
-          </div>
+  <!-- Receipt 1 -->
+  <div class="receipt">
+    <div class="receipt-header">
+      <div class="amount-col">
+        <h3>₹7,200</h3>
+        <h4>(MANASA)</h4>
+      </div>
+      <span>2025/S/01469</span>
+    </div>
+    <div class="receipt-details">
+      Payment Type: Online Payment<br>
+      Reference No: ES502907DXTKKF<br>
+      Reference Date: 17-09-2025
+    </div>
+    <a href="receipts/receipt.pdf" download class="download-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" alt="Download">Download
+    </a>
+  </div>
 
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹7,200</h3><span>2024/S/01094</span>
-            </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: EZ41000C65TTL<br>
-              Reference Date: 01-10-2024
-            </div>
-            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
-          </div>
+  <!-- Receipt 2 -->
+  <div class="receipt">
+    <div class="receipt-header">
+      <div class="amount-col">
+        <h3>₹7,200</h3>
+        <h4>(MANASA)</h4>
+      </div>
+      <span>2025/S/01468</span>
+    </div>
+    <div class="receipt-details">
+      Payment Type: Online Payment<br>
+      Reference No: ES50400GELSRV8<br>
+      Reference Date: 05-04-2025
+    </div>
+    <a href="receipts/receipt.pdf" download class="download-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" alt="Download">Download
+    </a>
+  </div>
 
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹2,000</h3><span>2024/S/00871</span>
-            </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: Z4501BFQVFKD<br>
-              Reference Date: 18-05-2024
-            </div>
-            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
-          </div>
-        </div>
+  <!-- Receipt 3 -->
+  <div class="receipt">
+    <div class="receipt-header">
+      <div class="amount-col">
+        <h3>₹7,200</h3>
+        <h4>(MANASA)</h4>
+      </div>
+      <span>2024/S/01467</span>
+    </div>
+    <div class="receipt-details">
+      Payment Type: Online Payment<br>
+      Reference No: EZ41000C65TTL<br>
+      Reference Date: 01-10-2024
+    </div>
+    <a href="receipts/receipt.pdf" download class="download-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" alt="Download">Download
+    </a>
+  </div>
+
+  <!-- Receipt 4 -->
+  <div class="receipt">
+    <div class="receipt-header">
+      <div class="amount-col">
+        <h3>₹2,000</h3>
+        <h4>(MANASA)</h4>
+      </div>
+      <span>2024/S/01466</span>
+    </div>
+    <div class="receipt-details">
+      Payment Type: Online Payment<br>
+      Reference No: Z4501BFQVFKD<br>
+      Reference Date: 18-05-2024
+    </div>
+    <a href="receipts/receipt.pdf" download class="download-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" alt="Download">Download
+    </a>
+  </div>
+
+</div>
+
       </div>
     </div>
   </div>
 
   <script>
+    const viewport = document.querySelector('.viewport');
     const pages = document.getElementById('pages');
     const tab1 = document.getElementById('tab1');
     const tab2 = document.getElementById('tab2');
-    const viewport = document.querySelector('.viewport');
-    let currentIndex = 0;
-    let startX = 0, currentX = 0, isDragging = false, animationFrame;
+    let currentIndex = 0, isDragging = false, startX = 0, currentX = 0;
 
     function setPage(index, animate = true) {
-      const maxIndex = pages.children.length - 1;
-      currentIndex = Math.max(0, Math.min(index, maxIndex));
       const vw = viewport.clientWidth;
+      currentIndex = Math.max(0, Math.min(index, pages.children.length - 1));
       pages.style.transition = animate ? 'transform 400ms cubic-bezier(.2,.9,.3,1)' : 'none';
       pages.style.transform = `translateX(${-currentIndex * vw}px)`;
       tab1.classList.toggle('active', currentIndex === 0);
@@ -321,41 +419,44 @@
 
     tab1.onclick = () => setPage(0);
     tab2.onclick = () => setPage(1);
-    window.onresize = () => setPage(currentIndex, false);
 
-    viewport.addEventListener('pointerdown', e => { isDragging = true; startX = e.clientX; currentX = startX; pages.style.transition = 'none'; });
+    viewport.addEventListener('pointerdown', e => {
+      isDragging = true; startX = e.clientX; currentX = startX;
+      pages.style.transition = 'none';
+      viewport.setPointerCapture(e.pointerId);
+    });
+
     viewport.addEventListener('pointermove', e => {
       if (!isDragging) return;
       currentX = e.clientX;
-      cancelAnimationFrame(animationFrame);
-      animationFrame = requestAnimationFrame(() => {
-        const dx = currentX - startX;
-        const vw = viewport.clientWidth;
-        pages.style.transform = `translateX(${ -currentIndex * vw + dx }px)`;
-      });
-    });
-    const endDrag = e => {
-      if (!isDragging) return;
-      isDragging = false;
       const dx = currentX - startX;
       const vw = viewport.clientWidth;
-      const threshold = Math.max(50, vw * 0.12);
+      pages.style.transform = `translateX(${-currentIndex * vw + dx}px)`;
+    });
+
+    function endDrag(e) {
+      if (!isDragging) return; isDragging = false;
+      try { viewport.releasePointerCapture(e.pointerId); } catch {}
+      const dx = currentX - startX, vw = viewport.clientWidth, threshold = Math.max(50, vw * 0.12);
       if (dx < -threshold) setPage(currentIndex + 1);
       else if (dx > threshold) setPage(currentIndex - 1);
       else setPage(currentIndex);
-    };
-    viewport.addEventListener('pointerup', endDrag);
-    viewport.addEventListener('pointercancel', endDrag);
-    viewport.addEventListener('pointerleave', endDrag);
+    }
 
-    function pad(n){return n<10?'0'+n:n}
+    ['pointerup','pointercancel','pointerleave'].forEach(evt => viewport.addEventListener(evt, endDrag));
+
+    window.addEventListener('resize', () => setPage(currentIndex,false));
+    setPage(0,false);
+
+    function pad(n){return n<10?'0'+n:n;}
     function updateTime(){
       const now=new Date();
-      document.getElementById('timeBar').innerText=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-      document.getElementById('dateBar').innerText=`${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
+      const hh=pad(now.getHours()),mm=pad(now.getMinutes()),ss=pad(now.getSeconds());
+      const dd=pad(now.getDate()),mo=pad(now.getMonth()+1),yy=now.getFullYear();
+      document.getElementById('timeBar').innerText=`${hh}:${mm}:${ss}`;
+      document.getElementById('dateBar').innerText=`${dd}-${mo}-${yy}`;
     }
     setInterval(updateTime,1000);updateTime();
-    setPage(0,false);
   </script>
 </body>
 </html>
