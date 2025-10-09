@@ -5,115 +5,201 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transport Summary - Jigyasa Joshi</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      /* Soft diagonal weave background pattern */
-      background: 
-        repeating-linear-gradient(135deg, #f5f5f5 0px, #f5f5f5 6px, #f0f0f0 6px, #f0f0f0 12px),
-        linear-gradient(180deg,#f3f4f7 0%,#e9ebef 100%);
-      display:flex;align-items:flex-start;justify-content:center;
-      min-height:100vh;padding-bottom:40px;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f1f1;
+      background-image: 
+        repeating-linear-gradient(45deg, rgba(240,240,240,0.5) 0, rgba(220,220,220,0.5) 1px, transparent 2px, transparent 6px),
+        repeating-linear-gradient(-45deg, rgba(240,240,240,0.5) 0, rgba(220,220,220,0.5) 1px, transparent 2px, transparent 6px);
+      background-size: 12px 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 100vh;
+      padding-bottom: 40px;
     }
 
-    .container{width:100%;max-width:420px}
+    .container { width: 100%; max-width: 420px; }
 
-    /* Header */
-    .header{
-      background:#000;color:#fff;text-align:center;
-      padding:16px 12px;font-size:18px;font-weight:700;
-      position:sticky;top:0;z-index:20
+    .header {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 16px 12px;
+      font-size: 18px;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 20;
     }
 
-    /* Tabs */
-    .tabs{display:flex;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-    .tab{flex:1;text-align:center;padding:12px 0;color:#777;font-weight:600;border-bottom:3px solid transparent;cursor:pointer;transition:all 200ms}
-    .tab.active{color:#0052cc;border-bottom:3px solid #0052cc}
+    .tabs {
+      display: flex;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      color: #777;
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: all 200ms;
+    }
+    .tab.active {
+      color: #0052cc;
+      border-bottom: 3px solid #0052cc;
+    }
 
-    /* Pages */
-    .viewport{overflow:hidden;width:100%;}
-    .pages{display:flex;transition:transform 400ms cubic-bezier(.2,.9,.3,1);will-change:transform}
-    .page{min-width:100%;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:16px;min-height:calc(100vh - 160px)}
+    .viewport { overflow: hidden; width: 100%; }
+    .pages { display: flex; transition: transform 400ms cubic-bezier(.2,.9,.3,1); will-change: transform; }
+    .page { min-width: 100%; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
 
     /* Card */
-    .card{
-      width:92%;max-width:400px;background:#fff;border-radius:14px;
-      box-shadow:0 8px 26px rgba(10,20,40,0.08);overflow:hidden;
-      padding:18px;
+    .card {
+      width: 92%;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 26px rgba(10,20,40,0.08);
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 10px;
     }
 
-    .profile{
-      display:flex;align-items:center;gap:14px;
+    .badges {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px 0 18px;
     }
-    .photo{
-      width:100px;height:100px;border-radius:16px 0 0 16px;
-      background:#f3f3f3 center/cover no-repeat;
-      border:3px solid #eee;
+    .bus-pass-no {
+      background: #ffa726;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 20px 0 0 20px;
+      font-size: 13px;
+      font-weight: 600;
     }
-    .profile-info{
-      flex:1;
-    }
-    .profile-info h2{font-size:20px;color:#222;margin-bottom:4px}
-    .profile-info p{color:#666;font-size:13px;line-height:1.4}
-
-    .details{margin-top:14px;border-top:1px solid #f2f2f2;padding-top:12px}
-    .details p{margin:6px 0;color:#333;font-size:14px}
-    .highlight{color:#0099cc;font-weight:700}
-
-    /* Bus pass + Active badges */
-    .pass-status{
-      display:flex;align-items:center;justify-content:space-between;margin-top:12px
-    }
-    .bus-pass-no{
-      background:#ffb84d;color:#fff;font-weight:700;font-size:13px;
-      padding:8px 14px;border-radius:0 20px 20px 0;
-      flex:1;margin-right:8px;text-align:left
-    }
-    .status{
-      background:#8fd694;color:#fff;padding:8px 14px;
-      border-radius:20px 0 0 20px;font-weight:700;font-size:12px;
-      text-align:center;min-width:70px
+    .status {
+      background: #63c173;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 0 20px 20px 0;
+      font-weight: 700;
+      font-size: 13px;
     }
 
-    /* Time bar */
-    .time-section{text-align:center;margin-top:10px;}
-    .time-section .date{font-size:13px;color:#555;margin-bottom:4px;display:flex;justify-content:center;align-items:center;gap:4px}
-    .time-section .clock{font-size:16px;font-weight:700;color:#0099cc}
-
-    /* Register Button */
-    .register{
-      margin-top:14px;background:#000;color:#fff;font-size:15px;
-      padding:12px 18px;border-radius:8px;border:none;width:92%;
-      max-width:400px;box-shadow:0 4px 10px rgba(0,0,0,0.08);
-      text-align:center;cursor:not-allowed
+    .profile {
+      text-align: center;
+      padding: 12px 18px 0 18px;
+    }
+    .photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: #f3f3f3 center/cover no-repeat;
+      border: 3px solid #eee;
+      margin: 0 auto;
+      background-image: url('img/profile.jpg');
+    }
+    .profile h2 {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #222;
+    }
+    .profile p {
+      color: #444;
+      font-size: 13px;
+      margin-top: 4px;
+      line-height: 1.4;
     }
 
-    /* Receipt cards */
-    .receipt{
-      width:92%;max-width:400px;background:#fff;border-radius:12px;
-      padding:14px 18px;box-shadow:0 8px 20px rgba(10,20,40,0.06);
-      position:relative;
+    .details {
+      padding: 10px 18px;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.6;
     }
-    .receipt-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .receipt-header h3{font-size:20px;color:#0099cc;margin:0}
-    .receipt-header span{color:#666;font-size:13px}
-    .receipt-details{color:#555;font-size:13px;line-height:1.5;margin-bottom:10px}
+    .highlight { color: #0078ff; font-weight: 700; }
+    .amount { color: #0099cc; font-weight: 700; }
+    .paid { color: #2ecc71; font-weight: 700; }
 
-    .download-btn{
-      position:absolute;right:18px;bottom:14px;
-      background:#8fd694;color:#fff;border:none;padding:6px 12px;
-      border-radius:6px;display:flex;align-items:center;gap:6px;
-      font-size:13px;cursor:pointer;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.1)
+    .time-bar {
+      padding: 10px 14px 0 14px;
+      text-align: center;
+      font-weight: 600;
+      color: #0078ff;
+      font-size: 14px;
     }
-    .download-btn:hover{opacity:0.9}
+    .time-bar small {
+      display: block;
+      font-size: 12px;
+      color: #333;
+    }
 
-    @media (max-width:420px){
-      .page{padding:12px}
-      .card,.receipt{width:100%}
-      .profile{flex-direction:column;align-items:center;text-align:center}
-      .photo{border-radius:16px}
-      .profile-info p{text-align:center}
+    .register {
+      margin-top: 14px;
+      background: #000;
+      color: #fff;
+      font-size: 15px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: not-allowed;
+      width: 92%;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+
+    /* Receipts */
+    .receipt {
+      width: 92%;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 20px rgba(10,20,40,0.06);
+      margin-bottom: 10px;
+    }
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .receipt-header h3 { font-size: 20px; color: #0099cc; margin: 0; }
+    .receipt-header span { color: #666; font-size: 13px; }
+    .receipt-details { color: #555; font-size: 13px; line-height: 1.5; margin-bottom: 6px; }
+
+    .download-btn {
+      background: #0052cc;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .download-btn img {
+      width: 14px;
+      height: 14px;
+      filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 420px) {
+      .page { padding: 12px; }
+      .card, .receipt { width: 100%; }
     }
   </style>
 </head>
@@ -123,7 +209,7 @@
 
     <div class="tabs">
       <div id="tab1" class="tab active">Bus Pass</div>
-      <div id="tab2" class="tab">Receipt</div>
+      <div id="tab2" class="tab">Receipts</div>
     </div>
 
     <div class="viewport">
@@ -131,39 +217,37 @@
         <!-- Bus Pass Page -->
         <div class="page" data-index="0">
           <div class="card">
+            <div class="badges">
+              <div class="status">Active</div>
+              <div class="bus-pass-no">Bus Pass No: 25 / 0876 / 605</div>
+            </div>
+
             <div class="profile">
-              <div id="photo" class="photo" style="background-image:url('image/img1.jpg');"></div>
-              <div class="profile-info">
-                <h2>Jigyasa Joshi</h2>
-                <p>(Sem-5 \\ 23ENG3CAI1027 | Mandsaur University - CSE-5)</p>
-              </div>
+              <div class="photo"></div>
+              <h2>Jigyasa Joshi</h2>
+              <p>(Sem-5 \\ 23ENG3CAI1027 | Mandsaur University - CSE-5)</p>
+              <p><strong>Pickup Point:</strong> MANASA</p>
             </div>
 
             <div class="details">
-              <p><strong>Pickup Point:</strong> MANASA</p>
               <p><strong>Shift & Timing:</strong> Regular (9:00 AM - 5:00 PM)</p>
               <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
               <p><strong>Route:</strong> R3 - <span class="highlight">MANASA TO MANDSAUR</span></p>
-              <p><strong>Fee Amount:</strong> <span style="color:#0099cc;font-weight:700;">₹7,200</span></p>
-              <p><strong>Fee Paid:</strong> <span style="color:#24a148;font-weight:700;">₹7,200</span></p>
+              <p><strong>Fee Amount:</strong> <span class="amount">₹7,200</span></p>
+              <p><strong>Fee Paid:</strong> <span class="paid">₹7,200</span></p>
               <p><strong>Pending Amount:</strong> ₹0</p>
-            </div>
-
-            <div class="pass-status">
-              <div class="bus-pass-no">Bus Pass No: 25 / 0876 / 605</div>
-              <div class="status">Active</div>
             </div>
           </div>
 
-          <div class="time-section">
-            <div class="date">📅 <span id="dateBar">00-00-0000</span></div>
-            <div class="clock" id="timeBar">00:00:00</div>
+          <div class="time-bar">
+            <small>📅 <span id="dateBar">00-00-0000</span></small>
+            ⏰ <span id="timeBar">00:00:00</span>
           </div>
 
           <button class="register" aria-disabled="true">Register for Transport</button>
         </div>
 
-        <!-- Receipt Page -->
+        <!-- Receipts Page -->
         <div class="page" data-index="1">
           <div class="receipt">
             <div class="receipt-header">
@@ -174,55 +258,43 @@
               Reference No: ES502907DXTKKF<br>
               Reference Date: 17-09-2025
             </div>
-            <a href="/receipts/receipt.pdf" class="download-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v8m0-8l-4 4m4-4l4 4M12 4v8"/></svg>
-              Download
-            </a>
+            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
           </div>
 
           <div class="receipt">
             <div class="receipt-header">
-              <h3>₹7,200</h3><span>2025/S/01256</span>
+              <h3>₹7,200</h3><span>2025/S/01258</span>
             </div>
             <div class="receipt-details">
               Payment Type: Online Payment<br>
               Reference No: ES50400GELSRV8<br>
               Reference Date: 05-04-2025
             </div>
-            <a href="/receipts/receipt.pdf" class="download-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v8m0-8l-4 4m4-4l4 4M12 4v8"/></svg>
-              Download
-            </a>
+            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
           </div>
 
           <div class="receipt">
             <div class="receipt-header">
-              <h3>₹7,200</h3><span>2024/S/01008</span>
+              <h3>₹7,200</h3><span>2024/S/01094</span>
             </div>
             <div class="receipt-details">
               Payment Type: Online Payment<br>
               Reference No: EZ41000C65TTL<br>
               Reference Date: 01-10-2024
             </div>
-            <a href="/receipts/receipt.pdf" class="download-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v8m0-8l-4 4m4-4l4 4M12 4v8"/></svg>
-              Download
-            </a>
+            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
           </div>
 
           <div class="receipt">
             <div class="receipt-header">
-              <h3>₹2,000</h3><span>2024/S/00741</span>
+              <h3>₹2,000</h3><span>2024/S/00871</span>
             </div>
             <div class="receipt-details">
               Payment Type: Online Payment<br>
               Reference No: Z4501BFQVFKD<br>
               Reference Date: 18-05-2024
             </div>
-            <a href="/receipts/receipt.pdf" class="download-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v8m0-8l-4 4m4-4l4 4M12 4v8"/></svg>
-              Download
-            </a>
+            <button class="download-btn"><img src="https://cdn-icons-png.flaticon.com/512/3502/3502477.png" alt="">Download</button>
           </div>
         </div>
       </div>
@@ -230,56 +302,60 @@
   </div>
 
   <script>
-    const viewport = document.querySelector('.viewport');
     const pages = document.getElementById('pages');
-    const tabs = document.querySelectorAll('.tab');
-    let currentIndex = 0, startX=0,currentX=0,isDragging=false,anim=null;
+    const tab1 = document.getElementById('tab1');
+    const tab2 = document.getElementById('tab2');
+    const viewport = document.querySelector('.viewport');
+    let currentIndex = 0;
+    let startX = 0, currentX = 0, isDragging = false, animationFrame;
 
-    function setPage(i,animt=true){
-      const max=pages.children.length-1;
-      currentIndex=Math.max(0,Math.min(i,max));
-      const vw=viewport.clientWidth;
-      pages.style.transition=animt?'transform 400ms cubic-bezier(.2,.9,.3,1)':'none';
-      pages.style.transform=`translateX(${-currentIndex*vw}px)`;
-      tabs[0].classList.toggle('active',currentIndex===0);
-      tabs[1].classList.toggle('active',currentIndex===1);
+    function setPage(index, animate = true) {
+      const maxIndex = pages.children.length - 1;
+      currentIndex = Math.max(0, Math.min(index, maxIndex));
+      const vw = viewport.clientWidth;
+      pages.style.transition = animate ? 'transform 400ms cubic-bezier(.2,.9,.3,1)' : 'none';
+      pages.style.transform = `translateX(${-currentIndex * vw}px)`;
+      tab1.classList.toggle('active', currentIndex === 0);
+      tab2.classList.toggle('active', currentIndex === 1);
     }
-    tabs[0].onclick=()=>setPage(0);
-    tabs[1].onclick=()=>setPage(1);
-    window.onresize=()=>setPage(currentIndex,false);
-    viewport.addEventListener('pointerdown',e=>{
-      isDragging=true;startX=e.clientX;currentX=startX;pages.style.transition='none';
-      viewport.setPointerCapture(e.pointerId);
-    });
-    viewport.addEventListener('pointermove',e=>{
-      if(!isDragging)return;currentX=e.clientX;cancelAnimationFrame(anim);
-      anim=requestAnimationFrame(()=>{
-        const dx=currentX-startX;const vw=viewport.clientWidth;
-        pages.style.transform=`translateX(${ -currentIndex*vw + dx }px)`;
+
+    tab1.onclick = () => setPage(0);
+    tab2.onclick = () => setPage(1);
+    window.onresize = () => setPage(currentIndex, false);
+
+    viewport.addEventListener('pointerdown', e => { isDragging = true; startX = e.clientX; currentX = startX; pages.style.transition = 'none'; });
+    viewport.addEventListener('pointermove', e => {
+      if (!isDragging) return;
+      currentX = e.clientX;
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(() => {
+        const dx = currentX - startX;
+        const vw = viewport.clientWidth;
+        pages.style.transform = `translateX(${ -currentIndex * vw + dx }px)`;
       });
     });
-    function endDrag(e){
-      if(!isDragging)return;isDragging=false;
-      try{viewport.releasePointerCapture(e.pointerId);}catch{}
-      const dx=currentX-startX;const vw=viewport.clientWidth;const t=Math.max(50,vw*0.12);
-      if(dx<-t)setPage(currentIndex+1);else if(dx>t)setPage(currentIndex-1);else setPage(currentIndex);
-    }
-    viewport.addEventListener('pointerup',endDrag);
-    viewport.addEventListener('pointercancel',endDrag);
-    viewport.addEventListener('pointerleave',endDrag);
-    setPage(0,false);
+    const endDrag = e => {
+      if (!isDragging) return;
+      isDragging = false;
+      const dx = currentX - startX;
+      const vw = viewport.clientWidth;
+      const threshold = Math.max(50, vw * 0.12);
+      if (dx < -threshold) setPage(currentIndex + 1);
+      else if (dx > threshold) setPage(currentIndex - 1);
+      else setPage(currentIndex);
+    };
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('pointerleave', endDrag);
 
-    function pad(n){return n<10?'0'+n:n;}
+    function pad(n){return n<10?'0'+n:n}
     function updateTime(){
       const now=new Date();
       document.getElementById('timeBar').innerText=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
       document.getElementById('dateBar').innerText=`${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
     }
     setInterval(updateTime,1000);updateTime();
-    document.addEventListener('keydown',e=>{
-      if(e.key==='ArrowLeft')setPage(0);
-      if(e.key==='ArrowRight')setPage(1);
-    });
+    setPage(0,false);
   </script>
 </body>
 </html>
