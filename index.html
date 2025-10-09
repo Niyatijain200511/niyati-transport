@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transport Summary - Niyati Jain</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f2f5fa;
+    * {
       margin: 0;
       padding: 0;
-      color: #333;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f3f5f9;
+      overflow-x: hidden;
     }
 
     /* Header */
@@ -21,24 +25,29 @@
       padding: 15px 0;
       font-size: 18px;
       font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    /* Tab switch */
+    /* Tabs */
     .tabs {
       display: flex;
       justify-content: space-around;
       background-color: #fff;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .tab {
       flex: 1;
       text-align: center;
-      padding: 12px;
-      cursor: pointer;
+      padding: 12px 0;
       font-weight: 500;
-      color: #666;
+      color: #777;
       border-bottom: 3px solid transparent;
+      cursor: pointer;
       transition: 0.3s;
     }
 
@@ -47,21 +56,24 @@
       border-bottom: 3px solid #0052cc;
     }
 
-    /* Page content */
+    /* Pages container (for slide animation) */
+    .pages {
+      display: flex;
+      width: 200%;
+      transition: transform 0.5s ease-in-out;
+    }
+
     .page {
-      display: none;
+      width: 50%;
       padding: 20px;
+      min-height: calc(100vh - 100px);
     }
 
-    .page.active {
-      display: block;
-    }
-
-    /* Bus Pass Card */
+    /* Card Design */
     .card {
       background-color: #fff;
       border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
       overflow: hidden;
     }
 
@@ -76,28 +88,29 @@
       border-radius: 50%;
       border: 3px solid #eee;
       margin-bottom: 10px;
+      object-fit: cover;
     }
 
     .profile h2 {
       margin: 5px 0;
-      font-size: 20px;
+      font-size: 19px;
+      color: #222;
     }
 
     .profile p {
-      margin: 3px 0;
-      color: #555;
       font-size: 14px;
+      color: #666;
     }
 
     .details {
       padding: 15px 25px;
-      font-size: 15px;
-      color: #333;
       border-top: 1px solid #eee;
     }
 
     .details p {
       margin: 6px 0;
+      font-size: 14px;
+      color: #333;
     }
 
     .highlight {
@@ -112,16 +125,14 @@
       background-color: #f9fafc;
       padding: 12px 25px;
       border-top: 1px solid #eee;
-    }
-
-    .bus-pass span {
-      font-size: 14px;
+      font-size: 13px;
+      color: #444;
     }
 
     .status {
       background-color: #4CAF50;
       color: white;
-      font-size: 13px;
+      font-size: 12px;
       padding: 5px 10px;
       border-radius: 6px;
     }
@@ -147,11 +158,11 @@
       background-color: #0056b3;
     }
 
-    /* Receipt List */
+    /* Receipts Page */
     .receipt {
       background-color: #fff;
       border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
       padding: 15px 20px;
       margin-bottom: 15px;
     }
@@ -160,31 +171,33 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .receipt-header h3 {
-      font-size: 16px;
-      margin: 0;
+      font-size: 15px;
+      color: #222;
+      margin-bottom: 8px;
     }
 
     .receipt-details {
       font-size: 13px;
       color: #666;
+      line-height: 1.5;
       margin-bottom: 10px;
-      line-height: 1.4;
     }
 
     .receipt button {
       background-color: #4CAF50;
-      border: none;
       color: white;
-      padding: 8px 15px;
+      border: none;
+      padding: 8px 16px;
       border-radius: 6px;
       font-size: 13px;
       cursor: pointer;
     }
 
+    @media screen and (max-width: 600px) {
+      .page {
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -192,100 +205,110 @@
   <div class="header">Transport Summary</div>
 
   <div class="tabs">
-    <div class="tab active" onclick="showPage('buspass')">Bus Pass</div>
-    <div class="tab" onclick="showPage('receipt')">Receipt</div>
+    <div id="tab1" class="tab active" onclick="showPage(0)">Bus Pass</div>
+    <div id="tab2" class="tab" onclick="showPage(1)">Receipt</div>
   </div>
 
-  <!-- Bus Pass Page -->
-  <div id="buspass" class="page active">
-    <div class="card">
-      <div class="profile">
-        <img src="images/niyati.jpg" alt="Niyati Jain">
-        <h2>Niyati Jain</h2>
-        <p><strong>Roll No:</strong> 23ENG3BCT1007</p>
-        <p><strong>Course:</strong> B.Tech (CSE)</p>
-      </div>
+  <div id="pages" class="pages">
+    <!-- Bus Pass Page -->
+    <div class="page">
+      <div class="card">
+        <div class="profile">
+          <img src="images/niyati.jpg" alt="Niyati Jain">
+          <h2>Niyati Jain</h2>
+          <p><strong>Roll No:</strong> 23ENG3BCT1007</p>
+          <p><strong>Course:</strong> B.Tech (CSE)</p>
+        </div>
 
-      <div class="details">
-        <p><strong>Route:</strong> R3 - <span class="highlight">Manasa to Mandsaur</span></p>
-        <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
-        <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
-        <p><strong>Fee Paid:</strong> ₹7,200</p>
-        <p><strong>Pending Amount:</strong> ₹0</p>
-      </div>
+        <div class="details">
+          <p><strong>Route:</strong> R3 - <span class="highlight">Manasa to Mandsaur</span></p>
+          <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
+          <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
+          <p><strong>Fee Paid:</strong> ₹7,200</p>
+          <p><strong>Pending Amount:</strong> ₹0</p>
+        </div>
 
-      <div class="bus-pass">
-        <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
-        <div class="status">Active</div>
-      </div>
+        <div class="bus-pass">
+          <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
+          <div class="status">Active</div>
+        </div>
 
-      <div class="download">
-        <button onclick="downloadReceipt()">⬇️ Download Receipt</button>
+        <div class="download">
+          <button onclick="downloadReceipt()">⬇️ Download Receipt</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Receipt Page -->
-  <div id="receipt" class="page">
-    <div class="receipt">
-      <div class="receipt-header">
-        <h3>₹7,200</h3>
-        <span>(MAMASU)</span>
+    <!-- Receipts Page -->
+    <div class="page">
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASU)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: ES502907DXTKKF<br>
+          Reference Date: 17-09-2025
+        </div>
+        <button onclick="downloadReceipt()">Download</button>
       </div>
-      <div class="receipt-details">
-        Payment Type: Online Payment<br>
-        Reference No: ES502907DXTKKF<br>
-        Reference Date: 17-09-2025
-      </div>
-      <button onclick="downloadReceipt()">Download</button>
-    </div>
 
-    <div class="receipt">
-      <div class="receipt-header">
-        <h3>₹7,200</h3>
-        <span>(MAMASU)</span>
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASU)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: ES50400GELSRV8<br>
+          Reference Date: 05-04-2025
+        </div>
+        <button onclick="downloadReceipt()">Download</button>
       </div>
-      <div class="receipt-details">
-        Payment Type: Online Payment<br>
-        Reference No: ES50400GELSRV8<br>
-        Reference Date: 05-04-2025
-      </div>
-      <button onclick="downloadReceipt()">Download</button>
-    </div>
 
-    <div class="receipt">
-      <div class="receipt-header">
-        <h3>₹7,200</h3>
-        <span>(MAMASU)</span>
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹7,200</h3>
+          <span>(MAMASU)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: EZ41000C65TTL<br>
+          Reference Date: 01-10-2024
+        </div>
+        <button onclick="downloadReceipt()">Download</button>
       </div>
-      <div class="receipt-details">
-        Payment Type: Online Payment<br>
-        Reference No: EZ41000C65TTL<br>
-        Reference Date: 01-10-2024
-      </div>
-      <button onclick="downloadReceipt()">Download</button>
-    </div>
 
-    <div class="receipt">
-      <div class="receipt-header">
-        <h3>₹2,000</h3>
-        <span>(MAMASU)</span>
+      <div class="receipt">
+        <div class="receipt-header">
+          <h3>₹2,000</h3>
+          <span>(MAMASU)</span>
+        </div>
+        <div class="receipt-details">
+          Payment Type: Online Payment<br>
+          Reference No: Z4501BFQVFKD<br>
+          Reference Date: 18-05-2024
+        </div>
+        <button onclick="downloadReceipt()">Download</button>
       </div>
-      <div class="receipt-details">
-        Payment Type: Online Payment<br>
-        Reference No: Z4501BFQVFKD<br>
-        Reference Date: 18-05-2024
-      </div>
-      <button onclick="downloadReceipt()">Download</button>
     </div>
   </div>
 
   <script>
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-      event.target.classList.add('active');
+    function showPage(index) {
+      const pages = document.getElementById('pages');
+      const tab1 = document.getElementById('tab1');
+      const tab2 = document.getElementById('tab2');
+      if (index === 0) {
+        pages.style.transform = 'translateX(0%)';
+        tab1.classList.add('active');
+        tab2.classList.remove('active');
+      } else {
+        pages.style.transform = 'translateX(-50%)';
+        tab2.classList.add('active');
+        tab1.classList.remove('active');
+      }
     }
 
     function downloadReceipt() {
@@ -295,3 +318,4 @@
 
 </body>
 </html>
+
