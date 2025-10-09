@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transport Summary - Niyati Jain</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f5fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    /* Header */
+    .header {
+      background-color: #0052cc;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    /* Tab switch */
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      background-color: #fff;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: 0.3s;
+    }
+
+    .tab.active {
+      color: #0052cc;
+      border-bottom: 3px solid #0052cc;
+    }
+
+    /* Page content */
+    .page {
+      display: none;
+      padding: 20px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* Bus Pass Card */
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .profile {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .profile img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #eee;
+      margin-bottom: 10px;
+    }
+
+    .profile h2 {
+      margin: 5px 0;
+      font-size: 20px;
+    }
+
+    .profile p {
+      margin: 3px 0;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .details {
+      padding: 15px 25px;
+      font-size: 15px;
+      color: #333;
+      border-top: 1px solid #eee;
+    }
+
+    .details p {
+      margin: 6px 0;
+    }
+
+    .highlight {
+      color: #0078ff;
+      font-weight: 600;
+    }
+
+    .bus-pass {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9fafc;
+      padding: 12px 25px;
+      border-top: 1px solid #eee;
+    }
+
+    .bus-pass span {
+      font-size: 14px;
+    }
+
+    .status {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 13px;
+      padding: 5px 10px;
+      border-radius: 6px;
+    }
+
+    .download {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .download button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .download button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Receipt List */
+    .receipt {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      padding: 15px 20px;
+      margin-bottom: 15px;
+    }
+
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .receipt-header h3 {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .receipt-details {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .receipt button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="header">Transport Summary</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showPage('buspass')">Bus Pass</div>
+    <div class="tab" onclick="showPage('receipt')">Receipt</div>
+  </div>
+
+  <!-- Bus Pass Page -->
+  <div id="buspass" class="page active">
+    <div class="card">
+      <div class="profile">
+        <img src="images/niyati.jpg" alt="Niyati Jain">
+        <h2>Niyati Jain</h2>
+        <p><strong>Roll No:</strong> 23ENG3BCT1007</p>
+        <p><strong>Course:</strong> B.Tech (CSE)</p>
+      </div>
+
+      <div class="details">
+        <p><strong>Route:</strong> R3 - <span class="highlight">Manasa to Mandsaur</span></p>
+        <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
+        <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
+        <p><strong>Fee Paid:</strong> ₹7,200</p>
+        <p><strong>Pending Amount:</strong> ₹0</p>
+      </div>
+
+      <div class="bus-pass">
+        <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
+        <div class="status">Active</div>
+      </div>
+
+      <div class="download">
+        <button onclick="downloadReceipt()">⬇️ Download Receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receipt Page -->
+  <div id="receipt" class="page">
+    <div class="receipt">
+      <div class="receipt-header">
+        <h3>₹7,200</h3>
+        <span>(MAMASU)</span>
+      </div>
+      <div class="receipt-details">
+        Payment Type: Online Payment<br>
+        Reference No: ES502907DXTKKF<br>
+        Reference Date: 17-09-2025
+      </div>
+      <button onclick="downloadReceipt()">Download</button>
+    </div>
+
+    <div class="receipt">
+      <div class="receipt-header">
+        <h3>₹7,200</h3>
+        <span>(MAMASU)</span>
+      </div>
+      <div class="receipt-details">
+        Payment Type: Online Payment<br>
+        Reference No: ES50400GELSRV8<br>
+        Reference Date: 05-04-2025
+      </div>
+      <button onclick="downloadReceipt()">Download</button>
+    </div>
+
+    <div class="receipt">
+      <div class="receipt-header">
+        <h3>₹7,200</h3>
+        <span>(MAMASU)</span>
+      </div>
+      <div class="receipt-details">
+        Payment Type: Online Payment<br>
+        Reference No: EZ41000C65TTL<br>
+        Reference Date: 01-10-2024
+      </div>
+      <button onclick="downloadReceipt()">Download</button>
+    </div>
+
+    <div class="receipt">
+      <div class="receipt-header">
+        <h3>₹2,000</h3>
+        <span>(MAMASU)</span>
+      </div>
+      <div class="receipt-details">
+        Payment Type: Online Payment<br>
+        Reference No: Z4501BFQVFKD<br>
+        Reference Date: 18-05-2024
+      </div>
+      <button onclick="downloadReceipt()">Download</button>
+    </div>
+  </div>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function downloadReceipt() {
+      window.location.href = 'receipts/receipt.pdf';
+    }
+  </script>
+
+</body>
+</html>
