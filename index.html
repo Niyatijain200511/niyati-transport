@@ -5,299 +5,235 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transport Summary - Jigyasa Joshi</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(180deg, #f3f4f7 0%, #e9ebef 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background: linear-gradient(180deg,#f3f4f7 0%,#e9ebef 100%);
+      display:flex;align-items:flex-start;justify-content:center;
+      min-height:100vh;padding-bottom:40px;
     }
 
-    .header {
-      background: #000;
-      color: #fff;
-      text-align: center;
-      padding: 16px 0;
-      font-size: 18px;
-      font-weight: 600;
-      width: 100%;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+    .container{width:100%;max-width:420px}
 
-    .tabs {
-      display: flex;
-      justify-content: space-around;
-      background-color: #fff;
-      width: 100%;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
+    /* Header */
+    .header{background:#000;color:#fff;text-align:center;padding:16px 12px;font-size:18px;font-weight:700;position:sticky;top:0;z-index:20}
 
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 12px 0;
-      font-weight: 500;
-      color: #777;
-      border-bottom: 3px solid transparent;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+    /* Tabs */
+    .tabs{display:flex;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+    .tab{flex:1;text-align:center;padding:12px 0;color:#777;font-weight:600;border-bottom:3px solid transparent;cursor:pointer;transition:all 200ms}
+    .tab.active{color:#0052cc;border-bottom:3px solid #0052cc}
 
-    .tab.active {
-      color: #0052cc;
-      border-bottom: 3px solid #0052cc;
-    }
+    /* Viewport to hide overflow while sliding */
+    .viewport{overflow:hidden;width:100%;}
 
-    .pages {
-      display: flex;
-      width: 200%;
-      transition: transform 0.5s ease-in-out;
-    }
+    .pages{display:flex;transition:transform 400ms cubic-bezier(.2,.9,.3,1);will-change:transform}
+    .page{min-width:100%;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:16px;min-height:calc(100vh - 160px)}
 
-    .page {
-      width: 50%;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: calc(100vh - 150px);
-    }
+    /* Card */
+    .card{width:92%;max-width:400px;background:#fff;border-radius:14px;box-shadow:0 8px 26px rgba(10,20,40,0.08);overflow:hidden}
+    .profile{text-align:center;padding:18px}
+    .photo{width:110px;height:110px;border-radius:50%;background:#f3f3f3 center/cover no-repeat;border:3px solid #eee;margin:0 auto}
+    .profile h2{margin-top:10px;font-size:20px;color:#222}
+    .profile p{color:#666;font-size:13px;margin-top:6px}
 
-    .card {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-      width: 90%;
-      max-width: 400px;
-    }
+    .details{padding:14px 18px;border-top:1px solid #f2f2f2}
+    .details p{margin:8px 0;color:#333;font-size:14px}
+    .highlight{color:#0078ff;font-weight:700}
 
-    .profile {
-      text-align: center;
-      padding: 20px;
-    }
+    .bus-pass{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#fbfdff;border-top:1px solid #f1f1f1;font-size:13px}
+    .status{background:#24a148;color:#fff;padding:6px 10px;border-radius:8px;font-weight:700;font-size:12px}
+    .time-bar{padding:14px;text-align:center;border-top:1px solid #f3f3f3;background:linear-gradient(180deg,#fafafa,#ffffff);font-weight:700}
 
-    .photo {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: url('image/img1.jpg') center/cover no-repeat, #f3f3f3;
-      border: 3px solid #e0e0e0;
-      margin: 0 auto 10px;
-    }
+    .register{margin-top:14px;background:#f0f0f0;color:#999;font-size:15px;padding:12px 18px;border-radius:8px;border:none;cursor:not-allowed;width:92%;max-width:400px;box-shadow:0 4px 10px rgba(0,0,0,0.06);text-align:center}
 
-    .profile h2 {
-      margin: 6px 0 2px;
-      font-size: 20px;
-      color: #222;
-    }
+    /* Receipt cards */
+    .receipt{width:92%;max-width:400px;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 8px 20px rgba(10,20,40,0.06)}
+    .receipt-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .receipt-header h3{font-size:20px;color:#222;margin:0}
+    .receipt-header span{color:#666;font-size:13px}
+    .receipt-details{color:#555;font-size:13px;line-height:1.5}
 
-    .profile p {
-      font-size: 14px;
-      color: #666;
-      margin: 2px 0;
-    }
-
-    .details {
-      padding: 15px 20px;
-      border-top: 1px solid #eee;
-    }
-
-    .details p {
-      font-size: 14px;
-      color: #333;
-      margin: 6px 0;
-    }
-
-    .highlight {
-      color: #0078ff;
-      font-weight: 600;
-    }
-
-    .bus-pass {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f9fafc;
-      padding: 12px 20px;
-      border-top: 1px solid #eee;
-      font-size: 13px;
-      color: #444;
-    }
-
-    .status {
-      background-color: #4caf50;
-      color: #fff;
-      font-size: 12px;
-      padding: 5px 10px;
-      border-radius: 6px;
-    }
-
-    .time-bar {
-      text-align: center;
-      padding: 15px;
-      border-top: 1px solid #eee;
-      background: #fafafa;
-      font-size: 14px;
-      color: #444;
-      font-weight: 600;
-    }
-
-    .register {
-      margin-top: 20px;
-      background: #f0f0f0;
-      color: #999;
-      font-size: 15px;
-      padding: 12px 25px;
-      border-radius: 8px;
-      border: none;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      cursor: not-allowed;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .receipt {
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    .receipt-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 15px;
-      color: #222;
-      margin-bottom: 8px;
-    }
-
-    .receipt-details {
-      font-size: 13px;
-      color: #666;
-      line-height: 1.5;
-    }
-
-    @media screen and (max-width: 600px) {
-      .page { padding: 10px; }
+    @media (max-width:420px){
+      .page{padding:12px}
+      .card,.receipt{width:100%}
     }
   </style>
 </head>
 <body>
-  <div class="header">Transport Summary</div>
+  <div class="container">
+    <div class="header">Transport Summary</div>
 
-  <div class="tabs">
-    <div id="tab1" class="tab active" onclick="showPage(0)">Bus Pass</div>
-    <div id="tab2" class="tab" onclick="showPage(1)">Receipt</div>
-  </div>
-
-  <div id="pages" class="pages">
-    <!-- Bus Pass Page -->
-    <div class="page">
-      <div class="card">
-        <div class="profile">
-          <div class="photo"></div>
-          <h2>Jigyasa Joshi</h2>
-          <p><strong>Roll No:</strong> 23ENG3CAI1027</p>
-          <p><strong>Course:</strong> B.Tech (CSE)</p>
-        </div>
-        <div class="details">
-          <p><strong>Route:</strong> R3 - <span class="highlight">MANASA TO MANDSAUR</span></p>
-          <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
-          <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
-          <p><strong>Fee Paid:</strong> ₹7,200</p>
-          <p><strong>Pending Amount:</strong> ₹0</p>
-        </div>
-        <div class="bus-pass">
-          <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
-          <div class="status">Active</div>
-        </div>
-        <div class="time-bar" id="timeBar">00:00:00 | 00-00-0000</div>
-      </div>
-      <button class="register">Register for Transport</button>
+    <div class="tabs">
+      <div id="tab1" class="tab active">Bus Pass</div>
+      <div id="tab2" class="tab">Receipt</div>
     </div>
 
-    <!-- Receipts Page -->
-    <div class="page">
-      <div class="receipt">
-        <div class="receipt-header">
-          <h3>₹7,200</h3>
-          <span>(MAMASA)</span>
-        </div>
-        <div class="receipt-details">
-          Payment Type: Online Payment<br>
-          Reference No: ES502907DXTKKF<br>
-          Reference Date: 17-09-2025
-        </div>
-      </div>
+    <div class="viewport">
+      <div id="pages" class="pages">
+        <!-- Bus Pass Page -->
+        <div class="page" data-index="0">
+          <div class="card">
+            <div class="profile">
+              <div id="photo" class="photo" style="background-image: url('image/img1.jpg');"></div>
+              <h2>Jigyasa Joshi</h2>
+              <p><strong>Roll No:</strong> 23ENG3CAI1027</p>
+              <p><strong>Course:</strong> B.Tech (CSE)</p>
+            </div>
 
-      <div class="receipt">
-        <div class="receipt-header">
-          <h3>₹7,200</h3>
-          <span>(MAMASA)</span>
-        </div>
-        <div class="receipt-details">
-          Payment Type: Online Payment<br>
-          Reference No: ES50400GELSRV8<br>
-          Reference Date: 05-04-2025
-        </div>
-      </div>
+            <div class="details">
+              <p><strong>Route:</strong> R3 - <span class="highlight">MANASA TO MANDSAUR</span></p>
+              <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
+              <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
+              <p><strong>Fee Paid:</strong> ₹7,200</p>
+              <p><strong>Pending Amount:</strong> ₹0</p>
+            </div>
 
-      <div class="receipt">
-        <div class="receipt-header">
-          <h3>₹7,200</h3>
-          <span>(MAMASA)</span>
-        </div>
-        <div class="receipt-details">
-          Payment Type: Online Payment<br>
-          Reference No: EZ41000C65TTL<br>
-          Reference Date: 01-10-2024
-        </div>
-      </div>
+            <div class="bus-pass">
+              <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
+              <div class="status">Active</div>
+            </div>
 
-      <div class="receipt">
-        <div class="receipt-header">
-          <h3>₹2,000</h3>
-          <span>(MAMASA)</span>
+            <div class="time-bar" id="timeBar">00:00:00 | 00-00-0000</div>
+          </div>
+
+          <button class="register" aria-disabled="true">Register for Transport</button>
         </div>
-        <div class="receipt-details">
-          Payment Type: Online Payment<br>
-          Reference No: Z4501BFQVFKD<br>
-          Reference Date: 18-05-2024
+
+        <!-- Receipt Page -->
+        <div class="page" data-index="1">
+          <div class="receipt">
+            <div class="receipt-header">
+              <h3>₹7,200</h3>
+              <span>(MAMASA)</span>
+            </div>
+            <div class="receipt-details">
+              Payment Type: Online Payment<br>
+              Reference No: ES502907DXTKKF<br>
+              Reference Date: 17-09-2025
+            </div>
+          </div>
+
+          <div class="receipt">
+            <div class="receipt-header">
+              <h3>₹7,200</h3>
+              <span>(MAMASA)</span>
+            </div>
+            <div class="receipt-details">
+              Payment Type: Online Payment<br>
+              Reference No: ES50400GELSRV8<br>
+              Reference Date: 05-04-2025
+            </div>
+          </div>
+
+          <div class="receipt">
+            <div class="receipt-header">
+              <h3>₹7,200</h3>
+              <span>(MAMASA)</span>
+            </div>
+            <div class="receipt-details">
+              Payment Type: Online Payment<br>
+              Reference No: EZ41000C65TTL<br>
+              Reference Date: 01-10-2024
+            </div>
+          </div>
+
+          <div class="receipt">
+            <div class="receipt-header">
+              <h3>₹2,000</h3>
+              <span>(MAMASA)</span>
+            </div>
+            <div class="receipt-details">
+              Payment Type: Online Payment<br>
+              Reference No: Z4501BFQVFKD<br>
+              Reference Date: 18-05-2024
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const pages = document.getElementById("pages");
-    const tab1 = document.getElementById("tab1");
-    const tab2 = document.getElementById("tab2");
+    // Elements
+    const container = document.querySelector('.container');
+    const viewport = document.querySelector('.viewport');
+    const pages = document.getElementById('pages');
+    const tabs = document.querySelectorAll('.tab');
+    const tab1 = document.getElementById('tab1');
+    const tab2 = document.getElementById('tab2');
 
-    function showPage(index) {
-      if (index === 0) {
-        pages.style.transform = "translateX(0%)";
-        tab1.classList.add("active");
-        tab2.classList.remove("active");
-      } else {
-        pages.style.transform = "translateX(-50%)";
-        tab2.classList.add("active");
-        tab1.classList.remove("active");
-      }
+    let currentIndex = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+    let animationFrame = null;
+
+    function setPage(index, animate = true) {
+      const maxIndex = pages.children.length - 1;
+      currentIndex = Math.max(0, Math.min(index, maxIndex));
+
+      const vw = viewport.clientWidth;
+      if (animate) pages.style.transition = 'transform 400ms cubic-bezier(.2,.9,.3,1)';
+      else pages.style.transition = 'none';
+      pages.style.transform = `translateX(${-currentIndex * vw}px)`;
+
+      // active tab
+      tab1.classList.toggle('active', currentIndex === 0);
+      tab2.classList.toggle('active', currentIndex === 1);
     }
 
-    function pad(n) { return n < 10 ? "0" + n : n; }
+    // Click on tabs
+    tab1.addEventListener('click', () => setPage(0));
+    tab2.addEventListener('click', () => setPage(1));
+
+    // Resize: recenter pages
+    window.addEventListener('resize', () => setPage(currentIndex, false));
+
+    // Pointer-based swipe (works for touch + mouse)
+    viewport.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      currentX = startX;
+      pages.style.transition = 'none';
+      viewport.setPointerCapture(e.pointerId);
+    });
+
+    viewport.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX;
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(() => {
+        const dx = currentX - startX;
+        const vw = viewport.clientWidth;
+        pages.style.transform = `translateX(${ -currentIndex * vw + dx }px)`;
+      });
+    });
+
+    function endDrag(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      try { viewport.releasePointerCapture(e.pointerId); } catch (err) {}
+
+      const dx = currentX - startX;
+      const vw = viewport.clientWidth;
+      const threshold = Math.max(50, vw * 0.12); // 12% or 50px
+
+      // if swipe left (negative dx) and beyond threshold -> next page
+      if (dx < -threshold) setPage(currentIndex + 1);
+      else if (dx > threshold) setPage(currentIndex - 1);
+      else setPage(currentIndex);
+    }
+
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('pointerleave', endDrag);
+
+    // Initialize page
+    setPage(0, false);
+
+    // Clock
+    function pad(n) { return n < 10 ? '0' + n : n }
     function updateTime() {
       const now = new Date();
       const hh = pad(now.getHours());
@@ -306,24 +242,15 @@
       const dd = pad(now.getDate());
       const mo = pad(now.getMonth() + 1);
       const yy = now.getFullYear();
-      document.getElementById("timeBar").innerText = `${hh}:${mm}:${ss} | ${dd}-${mo}-${yy}`;
+      document.getElementById('timeBar').innerText = `${hh}:${mm}:${ss} | ${dd}-${mo}-${yy}`;
     }
+    setInterval(updateTime, 1000); updateTime();
 
-    setInterval(updateTime, 1000);
-    updateTime();
-
-    // Swipe functionality
-    let startX = 0;
-    let endX = 0;
-    const threshold = 50;
-
-    document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-    document.addEventListener('touchend', e => {
-      endX = e.changedTouches[0].clientX;
-      if (startX - endX > threshold) showPage(1);
-      else if (endX - startX > threshold) showPage(0);
+    // Optional: keyboard for quick testing
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') setPage(0);
+      if (e.key === 'ArrowRight') setPage(1);
     });
   </script>
 </body>
 </html>
-
