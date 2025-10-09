@@ -88,15 +88,16 @@
     }
 
     .photo {
-      width: 100px;
-      height: 100px;
-      border-radius: 14px;
+      width: 110px;
+      height: 140px;
+      border-radius: 12px;
       background: #f3f3f3 center/cover no-repeat;
       border: 2px solid #ddd;
     }
 
     .profile-info {
       text-align: center;
+      margin-top: 6px;
     }
 
     .profile-info h2 {
@@ -123,15 +124,13 @@
     .bus-badge {
       background: #ff7b00;
       color: #fff;
-      padding: 8px 20px;
+      padding: 8px 26px;
       border-top-left-radius: 20px;
       border-bottom-left-radius: 20px;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
       font-weight: 600;
       font-size: 14px;
-      min-width: 110px;
       text-align: right;
+      min-width: 130px;
     }
 
     .status {
@@ -140,12 +139,10 @@
       padding: 8px 20px;
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
       font-weight: 600;
       font-size: 14px;
-      min-width: 110px;
       text-align: left;
+      min-width: 100px;
     }
 
     .details {
@@ -163,39 +160,53 @@
     }
 
     .bus-pass {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       padding: 12px 18px;
       background: #fbfdff;
       border-top: 1px solid #f1f1f1;
       font-size: 13px;
+      font-weight: 600;
+      color: #222;
     }
 
+    /* Time section */
     .time-bar {
-      padding: 10px;
       text-align: center;
-      font-weight: 700;
+      font-weight: 600;
       color: #333;
       background: linear-gradient(180deg, #fafafa, #ffffff);
       width: 92%;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .date-text {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .time-text {
+      font-size: 18px;
+      color: #0078ff;
+      font-weight: 700;
     }
 
     .register {
       margin-top: 14px;
-      background: #f0f0f0;
-      color: #999;
+      background: #000;
+      color: #fff;
       font-size: 15px;
       padding: 12px 18px;
       border-radius: 8px;
       border: none;
-      cursor: not-allowed;
       width: 92%;
       max-width: 400px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       text-align: center;
+      font-weight: 600;
     }
 
     /* Receipt cards */
@@ -220,8 +231,8 @@
     @media (max-width: 420px) {
       .page { padding: 12px; }
       .card, .receipt { width: 100%; }
-      .photo { width: 90px; height: 90px; }
-      .bus-badge, .status { font-size: 13px; padding: 7px 16px; min-width: 100px; }
+      .photo { width: 100px; height: 130px; }
+      .bus-badge, .status { font-size: 13px; padding: 7px 18px; }
     }
   </style>
 </head>
@@ -263,11 +274,15 @@
             </div>
 
             <div class="bus-pass">
-              <span>Bus Pass No: <strong>25 / 0876 / 605</strong></span>
+              Bus Pass No: <strong>25 / 0876 / 605</strong>
             </div>
           </div>
 
-          <div class="time-bar" id="timeBar">00:00:00 | 00-00-0000</div>
+          <div class="time-bar">
+            <div id="dateText" class="date-text">00-00-0000</div>
+            <div id="timeText" class="time-text">00:00:00</div>
+          </div>
+
           <button class="register" aria-disabled="true">Register for Transport</button>
         </div>
 
@@ -294,7 +309,6 @@
     const tab1 = document.getElementById('tab1');
     const tab2 = document.getElementById('tab2');
     let currentIndex = 0;
-    let isDragging = false, startX = 0, currentX = 0;
 
     function setPage(index, animate = true) {
       const maxIndex = pages.children.length - 1;
@@ -310,14 +324,17 @@
     tab2.addEventListener('click', () => setPage(1));
     window.addEventListener('resize', () => setPage(currentIndex, false));
 
+    // Clock
     function pad(n) { return n < 10 ? '0' + n : n }
     function updateTime() {
       const now = new Date();
       const hh = pad(now.getHours()), mm = pad(now.getMinutes()), ss = pad(now.getSeconds());
       const dd = pad(now.getDate()), mo = pad(now.getMonth() + 1), yy = now.getFullYear();
-      document.getElementById('timeBar').innerText = `${hh}:${mm}:${ss} | ${dd}-${mo}-${yy}`;
+      document.getElementById('dateText').innerText = `${dd}-${mo}-${yy}`;
+      document.getElementById('timeText').innerText = `${hh}:${mm}:${ss}`;
     }
     setInterval(updateTime, 1000); updateTime();
+
     setPage(0, false);
   </script>
 </body>
