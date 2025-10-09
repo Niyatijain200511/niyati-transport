@@ -1,238 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Transport Summary - Jigyasa Joshi</title>
   <style>
+    /* ---- Base ---- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-
+    html,body { height: 100%; }
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: repeating-linear-gradient(
-        135deg,
-        #f3f4f7 0,
-        #f3f4f7 2px,
-        #f8f9fb 2px,
-        #f8f9fb 4px
-      );
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      min-height: 100vh;
-      padding-bottom: 40px;
+      /* gradient + diagonal weave SVG texture (data URI) */
+      background-image:
+        linear-gradient(180deg, #f1f2f5 0%, #ffffff 100%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='%23e9ebef' fill-opacity='0.35'><rect width='80' height='80' rx='0'/></g><g stroke='%23dcdfe5' stroke-opacity='0.25' stroke-width='1'><path d='M-10 10 L90 110' /><path d='M-10 30 L90 130' /><path d='M-10 -10 L90 90' /><path d='M-10 50 L90 150' /></g></svg>");
+      background-repeat: repeat;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      min-height:100vh;
+      padding:28px 12px 40px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
-    .container { width: 100%; max-width: 420px; }
+    .container { width:100%; max-width:420px; }
 
     .header {
-      background: #000;
-      color: #fff;
-      text-align: center;
-      padding: 16px 12px;
-      font-size: 18px;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
-      z-index: 20;
+      background:#000; color:#fff; text-align:center;
+      padding:14px 12px; font-size:18px; font-weight:700;
+      position:sticky; top:0; z-index:30; border-radius:8px;
     }
 
+    /* Tabs */
     .tabs {
-      display: flex;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      display:flex; margin-top:12px; background:#fff;
+      border-radius:10px; overflow:hidden; box-shadow:0 4px 18px rgba(10,20,40,0.06);
     }
     .tab {
-      flex: 1;
-      text-align: center;
-      padding: 12px 0;
-      color: #777;
-      font-weight: 600;
-      border-bottom: 3px solid transparent;
-      cursor: pointer;
-      transition: all 200ms;
+      flex:1; text-align:center; padding:10px 0; cursor:pointer;
+      color:#666; font-weight:700; font-size:14px; border-bottom:3px solid transparent;
+      transition:all .18s ease;
     }
-    .tab.active {
-      color: #0052cc;
-      border-bottom: 3px solid #0052cc;
-    }
+    .tab.active { color:#0052cc; border-bottom-color:#0052cc; }
 
-    .viewport { overflow: hidden; width: 100%; }
-    .pages { display: flex; transition: transform 400ms cubic-bezier(.2, .9, .3, 1); }
-    .page { min-width: 100%; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    /* Viewport & pages */
+    .viewport { overflow:hidden; width:100%; margin-top:12px; }
+    .pages { display:flex; transition:transform 360ms cubic-bezier(.2,.9,.3,1); will-change:transform; }
+    .page { min-width:100%; padding:16px 8px 40px; display:flex; flex-direction:column; align-items:center; gap:14px; }
 
+    /* Card */
     .card {
-      width: 92%;
-      max-width: 400px;
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 8px 26px rgba(10, 20, 40, 0.08);
-      overflow: hidden;
-      padding-bottom: 10px;
+      width:94%; max-width:400px; background:#fff; border-radius:14px;
+      box-shadow:0 10px 30px rgba(10,20,40,0.08); overflow:hidden;
     }
 
-    /* Profile Section */
+    /* Profile top area */
     .profile {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 16px 18px;
+      display:flex; justify-content:space-between; align-items:flex-start; padding:16px 18px;
     }
 
     .profile-left {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      /* keep content centered below image */
+      width:170px;
     }
 
     .photo {
-      width: 110px;
-      height: 140px;
-      border-radius: 12px;
-      background: #f3f3f3 center/cover no-repeat;
-      border: 2px solid #ddd;
-    }
-
-    .profile-info {
-      text-align: center;
-      margin-top: 6px;
+      width:110px; height:140px; border-radius:12px;
+      background:#f3f3f3 center/cover no-repeat; border:2px solid #e6e6e6;
+      box-shadow:0 6px 18px rgba(10,20,40,0.06);
     }
 
     .profile-info h2 {
-      font-size: 18px;
-      color: #222;
-      margin-bottom: 2px;
+      font-size:18px; color:#222; font-weight:700;
+      letter-spacing:0.1px;
+    }
+    .profile-info .meta {
+      font-size:12.5px; color:#555; line-height:1.2; text-align:center;
+      margin-top:2px;
     }
 
-    .profile-info p {
-      color: #555;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    /* Badge Section */
+    /* Badge box (top-right) */
     .badge-box {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
-      margin-top: 10px;
+      display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-top:6px;
     }
 
     .bus-badge {
-      background: #ff7b00;
-      color: #fff;
-      padding: 8px 26px;
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
-      font-weight: 600;
-      font-size: 14px;
-      text-align: right;
-      min-width: 130px;
+      background:#ff7b00; color:#fff; padding:8px 32px;
+      border-top-left-radius:22px; border-bottom-left-radius:22px;
+      border-top-right-radius:0; border-bottom-right-radius:0;
+      font-weight:700; font-size:14px; min-width:140px; text-align:right;
+      box-shadow:0 6px 18px rgba(255,123,0,0.12);
     }
 
     .status {
-      background: #24a148;
-      color: #fff;
-      padding: 8px 20px;
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
-      font-weight: 600;
-      font-size: 14px;
-      text-align: left;
-      min-width: 100px;
+      background:#24a148; color:#fff; padding:8px 20px;
+      border-top-right-radius:22px; border-bottom-right-radius:22px;
+      border-top-left-radius:0; border-bottom-left-radius:0;
+      font-weight:700; font-size:14px; min-width:110px; text-align:left;
+      box-shadow:0 6px 18px rgba(36,161,72,0.12);
     }
 
+    /* Details list — order exactly as requested */
     .details {
-      padding: 10px 18px;
-      border-top: 1px solid #f2f2f2;
+      padding:12px 18px 14px; border-top:1px solid #f2f2f2;
+      display:flex; flex-direction:column; gap:8px;
     }
-    .details p {
-      margin: 6px 0;
-      color: #333;
-      font-size: 14px;
-    }
-    .highlight {
-      color: #0078ff;
-      font-weight: 700;
-    }
+    .details .row { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .details .label { color:#666; font-size:13px; width:50%; }
+    .details .value { color:#222; font-size:14px; font-weight:700; text-align:right; width:50%; }
 
+    /* Make the order and labels match screenshot text exactly */
+    .details .pickup .label { width:60%; font-weight:700; color:#333; font-size:14px; text-align:left; }
+    .details .pickup .value { text-align:right; font-weight:600; color:#444; }
+    .details .shift .label, .details .duration .label, .details .route .label { color:#666; font-weight:600; font-size:13px; }
+    .details .fee .value { color:#0099cc; font-size:15px; font-weight:800; } /* ₹7200 color */
+    .details .feePaid .value { color:#24a148; font-weight:800; } /* green fee paid */
+    .details .pending .value { color:#d44646; font-weight:700; }
+
+    /* Bus Pass line (emphasized) */
     .bus-pass {
-      padding: 12px 18px;
-      background: #fbfdff;
-      border-top: 1px solid #f1f1f1;
-      font-size: 13px;
-      font-weight: 600;
-      color: #222;
+      padding:12px 18px; background:#fbfdff; border-top:1px solid #f1f1f1; font-size:13px;
+      display:flex; justify-content:space-between; align-items:center; font-weight:700;
     }
 
-    /* Time section */
-    .time-bar {
-      text-align: center;
-      font-weight: 600;
-      color: #333;
-      background: linear-gradient(180deg, #fafafa, #ffffff);
-      width: 92%;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+    /* Time/date block below card */
+    .time-block {
+      width:94%; max-width:400px; display:flex; flex-direction:column; align-items:center; gap:6px;
     }
-
-    .date-text {
-      font-size: 13px;
-      color: #666;
+    .time-outer {
+      width:100%; background:linear-gradient(180deg,#fafafa,#fff); border-radius:10px; padding:8px 12px;
+      box-shadow:0 6px 18px rgba(10,20,40,0.05); text-align:center;
     }
+    .time-outer .date { color:#666; font-size:13px; font-weight:600; }
+    .time-outer .time { color:#0078ff; font-size:18px; font-weight:800; margin-top:4px; }
 
-    .time-text {
-      font-size: 18px;
-      color: #0078ff;
-      font-weight: 700;
-    }
-
+    /* Register button (black) */
     .register {
-      margin-top: 14px;
-      background: #000;
-      color: #fff;
-      font-size: 15px;
-      padding: 12px 18px;
-      border-radius: 8px;
-      border: none;
-      width: 92%;
-      max-width: 400px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-      text-align: center;
-      font-weight: 600;
+      margin-top:8px; background:#000; color:#fff; font-size:15px; padding:12px 18px;
+      border-radius:10px; width:94%; max-width:400px; text-align:center; font-weight:800;
+      box-shadow:0 8px 22px rgba(0,0,0,0.26);
+      text-decoration:none; display:inline-block;
     }
 
-    /* Receipt cards */
-    .receipt {
-      width: 92%;
-      max-width: 400px;
-      background: #fff;
-      border-radius: 12px;
-      padding: 14px 18px;
-      box-shadow: 0 8px 20px rgba(10, 20, 40, 0.06);
+    /* Receipt page */
+    .receipt-list { width:94%; max-width:400px; display:flex; flex-direction:column; gap:12px; }
+    .receipt-card {
+      background:#fff; border-radius:12px; padding:12px 14px; box-shadow:0 8px 20px rgba(10,20,40,0.06);
+      display:flex; flex-direction:column; gap:8px;
     }
-    .receipt-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .receipt-header h3 { font-size: 20px; color: #222; margin: 0; }
-    .receipt-header span { color: #666; font-size: 13px; }
-    .receipt-details { color: #555; font-size: 13px; line-height: 1.5; }
+    .receipt-header { display:flex; justify-content:space-between; align-items:center; }
+    .receipt-header h3 { margin:0; font-size:18px; color:#222; }
+    .receipt-header span { color:#666; font-size:13px; }
+    .receipt-details { color:#555; font-size:13px; line-height:1.4; }
 
-    @media (max-width: 420px) {
-      .page { padding: 12px; }
-      .card, .receipt { width: 100%; }
-      .photo { width: 100px; height: 130px; }
-      .bus-badge, .status { font-size: 13px; padding: 7px 18px; }
+    .download-row { display:flex; justify-content:flex-end; margin-top:6px; }
+    .download-btn {
+      background:#000; color:#fff; padding:10px 14px; border-radius:8px; text-decoration:none;
+      font-weight:700; box-shadow:0 6px 18px rgba(0,0,0,0.24);
+      font-size:13px;
+    }
+
+    /* small badges for receipts count in tab */
+    .tabs .count { display:inline-block; margin-left:6px; color:#999; font-weight:700; font-size:12px; }
+
+    /* Responsive tweaks */
+    @media (max-width:420px) {
+      .profile { padding:12px 12px; }
+      .profile-left { width:150px; }
+      .photo { width:100px; height:125px; }
+      .bus-badge { padding:7px 20px; min-width:120px; }
+      .status { padding:7px 16px; min-width:100px; }
+      .time-outer .time { font-size:16px; }
     }
   </style>
 </head>
@@ -240,81 +180,166 @@
   <div class="container">
     <div class="header">Transport Summary</div>
 
-    <div class="tabs">
-      <div id="tab1" class="tab active">Bus Pass</div>
-      <div id="tab2" class="tab">Receipt</div>
+    <div class="tabs" role="tablist" aria-label="Transport tabs">
+      <div id="tab1" class="tab active" role="tab" aria-selected="true" tabindex="0">Bus Pass</div>
+      <div id="tab2" class="tab" role="tab" aria-selected="false" tabindex="0">Receipt <span class="count">(4)</span></div>
     </div>
 
-    <div class="viewport">
+    <div class="viewport" id="viewport">
       <div id="pages" class="pages">
-        <!-- Bus Pass Page -->
+
+        <!-- PAGE 1: BUS PASS -->
         <div class="page" data-index="0">
-          <div class="card">
+          <div class="card" role="article" aria-label="Bus pass card">
             <div class="profile">
               <div class="profile-left">
-                <div id="photo" class="photo" style="background-image: url('image/img1.jpg');"></div>
+                <div id="photo" class="photo" style="background-image:url('/mnt/data/WhatsApp Image 2025-10-09 at 10.00.05 PM.jpeg');"></div>
+
                 <div class="profile-info">
                   <h2>Jigyasa Joshi</h2>
-                  <p><strong>Roll No:</strong> 23ENG3CAI1027</p>
+                  <div class="meta">(Sem -5 \ 23ENG3CAI1027 | Mandsaur University - CSE-5)</div>
                 </div>
               </div>
 
-              <div class="badge-box">
+              <div class="badge-box" aria-hidden="true">
                 <div class="bus-badge">Bus Pass</div>
                 <div class="status">Active</div>
               </div>
             </div>
 
-            <div class="details">
-              <p><strong>Route:</strong> R3 - <span class="highlight">MANASA TO MANDSAUR</span></p>
-              <p><strong>Duration:</strong> 15-09-2025 to 31-05-2026</p>
-              <p><strong>Shift:</strong> Regular (9:00 AM - 5:00 PM)</p>
-              <p><strong>Fee Paid:</strong> ₹7,200</p>
-              <p><strong>Pending Amount:</strong> ₹0</p>
+            <div class="details" aria-label="Transport details">
+              <div class="pickup row">
+                <div class="label">Pickup Point</div>
+                <div class="value">MANASA</div>
+              </div>
+
+              <div class="shift row">
+                <div class="label">Shift & Timing</div>
+                <div class="value">Regular (9:00 AM - 5:00 PM)</div>
+              </div>
+
+              <div class="duration row">
+                <div class="label">Duration</div>
+                <div class="value">15-09-2025 to 31-05-2026</div>
+              </div>
+
+              <div class="route row">
+                <div class="label">Route</div>
+                <div class="value">R3 - MANASA TO MANDSAUR</div>
+              </div>
+
+              <div class="fee row">
+                <div class="label">Fee Amount</div>
+                <div class="value">₹7,200</div>
+              </div>
+
+              <div class="feePaid row">
+                <div class="label">Fee Paid</div>
+                <div class="value">₹7,200</div>
+              </div>
+
+              <div class="pending row">
+                <div class="label">Pending Amount</div>
+                <div class="value">₹0</div>
+              </div>
             </div>
 
-            <div class="bus-pass">
-              Bus Pass No: <strong>25 / 0876 / 605</strong>
+            <div class="bus-pass" aria-hidden="true">
+              <div>Bus Pass No:</div>
+              <div><strong>25 / 0876 / 605</strong></div>
             </div>
           </div>
 
-          <div class="time-bar">
-            <div id="dateText" class="date-text">00-00-0000</div>
-            <div id="timeText" class="time-text">00:00:00</div>
+          <div class="time-block" aria-hidden="true">
+            <div class="time-outer">
+              <div id="dateText" class="date">00-00-0000</div>
+              <div id="timeText" class="time">00:00:00</div>
+            </div>
           </div>
 
-          <button class="register" aria-disabled="true">Register for Transport</button>
+          <a class="register" href="#" role="button" aria-disabled="true">Register for Transport</a>
         </div>
 
-        <!-- Receipt Page -->
+        <!-- PAGE 2: RECEIPTS -->
         <div class="page" data-index="1">
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹7,200</h3><span>(MANASA)</span>
+          <div class="receipt-list" role="list">
+            <!-- Repeat 4 receipts -->
+            <div class="receipt-card" role="listitem">
+              <div class="receipt-header">
+                <h3>₹7,200</h3><span>(MANASA)</span>
+              </div>
+              <div class="receipt-details">
+                Payment Type: Online Payment<br>
+                Reference No: ES502907DXTKKF<br>
+                Reference Date: 17-09-2025
+              </div>
+              <div class="download-row">
+                <a class="download-btn" href="/receipts/receipt.pdf" download>Download Receipt</a>
+              </div>
             </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: ES502907DXTKKF<br>
-              Reference Date: 17-09-2025
+
+            <div class="receipt-card" role="listitem">
+              <div class="receipt-header">
+                <h3>₹7,200</h3><span>(MANASA)</span>
+              </div>
+              <div class="receipt-details">
+                Payment Type: Online Payment<br>
+                Reference No: ES50400GELSRV8<br>
+                Reference Date: 05-04-2025
+              </div>
+              <div class="download-row">
+                <a class="download-btn" href="/receipts/receipt.pdf" download>Download Receipt</a>
+              </div>
+            </div>
+
+            <div class="receipt-card" role="listitem">
+              <div class="receipt-header">
+                <h3>₹7,200</h3><span>(MANASA)</span>
+              </div>
+              <div class="receipt-details">
+                Payment Type: Online Payment<br>
+                Reference No: EZ41000C65TTL<br>
+                Reference Date: 01-10-2024
+              </div>
+              <div class="download-row">
+                <a class="download-btn" href="/receipts/receipt.pdf" download>Download Receipt</a>
+              </div>
+            </div>
+
+            <div class="receipt-card" role="listitem">
+              <div class="receipt-header">
+                <h3>₹2,000</h3><span>(MANASA)</span>
+              </div>
+              <div class="receipt-details">
+                Payment Type: Online Payment<br>
+                Reference No: Z4501BFQVFKD<br>
+                Reference Date: 18-05-2024
+              </div>
+              <div class="download-row">
+                <a class="download-btn" href="/receipts/receipt.pdf" download>Download Receipt</a>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 
   <script>
-    const viewport = document.querySelector('.viewport');
+    /* Simple swipe/tab pager + keyboard accessibility + clock */
+    const viewport = document.getElementById('viewport');
     const pages = document.getElementById('pages');
     const tab1 = document.getElementById('tab1');
     const tab2 = document.getElementById('tab2');
     let currentIndex = 0;
+    let isDragging = false, startX = 0, currentX = 0, raf = null;
 
     function setPage(index, animate = true) {
-      const maxIndex = pages.children.length - 1;
-      currentIndex = Math.max(0, Math.min(index, maxIndex));
+      const max = pages.children.length - 1;
+      currentIndex = Math.max(0, Math.min(index, max));
       const vw = viewport.clientWidth;
-      pages.style.transition = animate ? 'transform 400ms cubic-bezier(.2,.9,.3,1)' : 'none';
+      pages.style.transition = animate ? 'transform 360ms cubic-bezier(.2,.9,.3,1)' : 'none';
       pages.style.transform = `translateX(${-currentIndex * vw}px)`;
       tab1.classList.toggle('active', currentIndex === 0);
       tab2.classList.toggle('active', currentIndex === 1);
@@ -322,19 +347,59 @@
 
     tab1.addEventListener('click', () => setPage(0));
     tab2.addEventListener('click', () => setPage(1));
+
     window.addEventListener('resize', () => setPage(currentIndex, false));
 
-    // Clock
-    function pad(n) { return n < 10 ? '0' + n : n }
+    viewport.addEventListener('pointerdown', (e) => {
+      isDragging = true; startX = e.clientX; currentX = startX;
+      pages.style.transition = 'none';
+      viewport.setPointerCapture(e.pointerId);
+    });
+
+    viewport.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const dx = currentX - startX;
+        const vw = viewport.clientWidth;
+        pages.style.transform = `translateX(${-currentIndex * vw + dx}px)`;
+      });
+    });
+
+    function endDrag(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      try { viewport.releasePointerCapture(e.pointerId); } catch {}
+      const dx = currentX - startX;
+      const vw = viewport.clientWidth;
+      const threshold = Math.max(50, vw * 0.12);
+      if (dx < -threshold) setPage(currentIndex + 1);
+      else if (dx > threshold) setPage(currentIndex - 1);
+      else setPage(currentIndex);
+    }
+
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('pointerleave', endDrag);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') setPage(0);
+      if (e.key === 'ArrowRight') setPage(1);
+    });
+
+    // Clock: date above, time below
+    function pad(n){ return n < 10 ? '0' + n : n; }
     function updateTime() {
       const now = new Date();
+      const dd = pad(now.getDate()), mo = pad(now.getMonth()+1), yy = now.getFullYear();
       const hh = pad(now.getHours()), mm = pad(now.getMinutes()), ss = pad(now.getSeconds());
-      const dd = pad(now.getDate()), mo = pad(now.getMonth() + 1), yy = now.getFullYear();
       document.getElementById('dateText').innerText = `${dd}-${mo}-${yy}`;
       document.getElementById('timeText').innerText = `${hh}:${mm}:${ss}`;
     }
     setInterval(updateTime, 1000); updateTime();
 
+    // initial render
     setPage(0, false);
   </script>
 </body>
