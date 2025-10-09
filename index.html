@@ -38,7 +38,6 @@
       z-index: 20;
     }
 
-    /* Tabs */
     .tabs {
       display: flex;
       background: #fff;
@@ -63,7 +62,6 @@
     .pages { display: flex; transition: transform 400ms cubic-bezier(.2, .9, .3, 1); }
     .page { min-width: 100%; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
 
-    /* Card */
     .card {
       width: 92%;
       max-width: 400px;
@@ -74,65 +72,80 @@
       padding-bottom: 10px;
     }
 
-    /* Profile row */
+    /* Profile Section */
     .profile {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: flex-start;
       padding: 16px 18px;
     }
 
     .profile-left {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 6px;
     }
 
     .photo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      border-radius: 14px;
       background: #f3f3f3 center/cover no-repeat;
       border: 2px solid #ddd;
     }
 
-    .profile-info h2 {
-      font-size: 19px;
-      color: #222;
-      margin-bottom: 4px;
+    .profile-info {
+      text-align: center;
     }
+
+    .profile-info h2 {
+      font-size: 18px;
+      color: #222;
+      margin-bottom: 2px;
+    }
+
     .profile-info p {
       color: #555;
       font-size: 13px;
       line-height: 1.4;
     }
 
-    /* Right side buttons */
+    /* Badge Section */
     .badge-box {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 6px;
+      gap: 8px;
+      margin-top: 10px;
     }
 
     .bus-badge {
       background: #ff7b00;
       color: #fff;
-      padding: 6px 14px;
-      border-top-left-radius: 14px;
-      border-bottom-left-radius: 14px;
+      padding: 8px 20px;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 14px;
+      min-width: 110px;
+      text-align: right;
     }
 
     .status {
       background: #24a148;
       color: #fff;
-      padding: 6px 14px;
-      border-top-right-radius: 14px;
-      border-bottom-right-radius: 14px;
+      padding: 8px 20px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 14px;
+      min-width: 110px;
+      text-align: left;
     }
 
     .details {
@@ -207,9 +220,8 @@
     @media (max-width: 420px) {
       .page { padding: 12px; }
       .card, .receipt { width: 100%; }
-      .profile-left { flex-direction: row; align-items: center; }
-      .photo { width: 70px; height: 70px; }
-      .bus-badge, .status { font-size: 12px; padding: 5px 10px; }
+      .photo { width: 90px; height: 90px; }
+      .bus-badge, .status { font-size: 13px; padding: 7px 16px; min-width: 100px; }
     }
   </style>
 </head>
@@ -232,8 +244,7 @@
                 <div id="photo" class="photo" style="background-image: url('image/img1.jpg');"></div>
                 <div class="profile-info">
                   <h2>Jigyasa Joshi</h2>
-                  <p><strong>Roll No:</strong> 23ENG3CAI1027<br>
-                  <strong>Course:</strong> B.Tech (CSE)</p>
+                  <p><strong>Roll No:</strong> 23ENG3CAI1027</p>
                 </div>
               </div>
 
@@ -272,39 +283,6 @@
               Reference Date: 17-09-2025
             </div>
           </div>
-
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹7,200</h3><span>(MANASA)</span>
-            </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: ES50400GELSRV8<br>
-              Reference Date: 05-04-2025
-            </div>
-          </div>
-
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹7,200</h3><span>(MANASA)</span>
-            </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: EZ41000C65TTL<br>
-              Reference Date: 01-10-2024
-            </div>
-          </div>
-
-          <div class="receipt">
-            <div class="receipt-header">
-              <h3>₹2,000</h3><span>(MANASA)</span>
-            </div>
-            <div class="receipt-details">
-              Payment Type: Online Payment<br>
-              Reference No: Z4501BFQVFKD<br>
-              Reference Date: 18-05-2024
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -331,33 +309,6 @@
     tab1.addEventListener('click', () => setPage(0));
     tab2.addEventListener('click', () => setPage(1));
     window.addEventListener('resize', () => setPage(currentIndex, false));
-
-    viewport.addEventListener('pointerdown', (e) => {
-      isDragging = true;
-      startX = e.clientX;
-      viewport.setPointerCapture(e.pointerId);
-      pages.style.transition = 'none';
-    });
-    viewport.addEventListener('pointermove', (e) => {
-      if (!isDragging) return;
-      currentX = e.clientX;
-      const dx = currentX - startX;
-      const vw = viewport.clientWidth;
-      pages.style.transform = `translateX(${-currentIndex * vw + dx}px)`;
-    });
-    function endDrag(e) {
-      if (!isDragging) return;
-      isDragging = false;
-      viewport.releasePointerCapture(e.pointerId);
-      const dx = currentX - startX;
-      const vw = viewport.clientWidth;
-      const threshold = Math.max(50, vw * 0.12);
-      if (dx < -threshold) setPage(currentIndex + 1);
-      else if (dx > threshold) setPage(currentIndex - 1);
-      else setPage(currentIndex);
-    }
-    viewport.addEventListener('pointerup', endDrag);
-    viewport.addEventListener('pointercancel', endDrag);
 
     function pad(n) { return n < 10 ? '0' + n : n }
     function updateTime() {
